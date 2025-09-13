@@ -1,10 +1,11 @@
 <h1 name="content" align="center"><a href=""></a> MSSQL</h1>
 
 <p align="center">
-  <a href="#-lab1"><img alt="lab1" src="https://img.shields.io/badge/Lab1-blue"></a> 
+  <a href="#лабораторная--1"><img alt="lab1" src="https://img.shields.io/badge/Lab1-blue"></a> 
 </p>
 
-# Lab1
+
+# Лабораторная №1
 
 [Назад](#content)
 <h3 align="center">
