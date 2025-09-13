@@ -4,7 +4,7 @@
   <a href="#-lab1"><img alt="lab1" src="https://img.shields.io/badge/Lab1-blue"></a> 
 </p>
 
-# lab1
+# Lab1
 
 [Назад](#content)
 <h3 align="center">
