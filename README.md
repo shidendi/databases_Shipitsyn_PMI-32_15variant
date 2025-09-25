@@ -134,3 +134,23 @@ CREATE TABLE Оплата (
 
 #### №2.1. Диаграмма
 ![image](/pictures/mod.png)
+
+#### №2.2. Заполненные таблицы
+# Клиент
+![image](/pictures/client.png)
+# Номер
+![image](/pictures/nomer.png)
+# Бронирование
+![image](/pictures/bron.png)
+# Номер_Бронирование
+![image](/pictures/nombro.png)
+# Заселение
+![image](/pictures/zasel.png)
+# Заселение_Номер
+![image](/pictures/zasnom.png)
+# Услуга
+![image](/pictures/yslygi.png)
+# Заселение_Услуга
+![image](/pictures/zasysl.png)
+# Оплата
+![image](/pictures/oplata.png)
