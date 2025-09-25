@@ -101,7 +101,7 @@ CREATE TABLE Заселение (
     Предварительная_стоимость DECIMAL(10,2),
     Фактическая_дата_выезда DATE NULL,
     Итоговая_стоимость DECIMAL(10,2),
-    Дата_заселения DATE NOT NULL,
+    Дата_заселения DATE NULL,
     id_клиента INT NOT NULL FOREIGN KEY REFERENCES Клиент(id_клиента)
 );
 
