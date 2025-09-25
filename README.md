@@ -75,7 +75,7 @@ CREATE TABLE Клиент (
 CREATE TABLE Бронирование (
     id_брони INT PRIMARY KEY IDENTITY,
     Дата_создания DATE NOT NULL DEFAULT GETDATE(),
-    Статус NVARCHAR(20) NOT NULL CHECK (Статус IN ('создана','подтверждена','отменена','завершена')),
+    Статус NVARCHAR(20) NOT NULL CHECK (Статус IN ('создана','отменена','завершена')),
     Дата_последнего_изменения DATETIME NOT NULL DEFAULT GETDATE(),
     Дата_предположительного_заселения DATE NOT NULL,
     Предварительная_стоимость DECIMAL(10,2) NOT NULL,
