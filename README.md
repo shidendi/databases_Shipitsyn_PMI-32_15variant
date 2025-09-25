@@ -61,3 +61,71 @@ ER-модель д.б. представлена в виде ER-диаграмм�
 - заполнить все таблицы адекватной информацией (не меньше 10 записей в таблицах, наличие примеров для связей типа 1:M )
 
 </h3>
+### SQL create tables:
+```
+CREATE TABLE Клиент (
+    id_клиента INT PRIMARY KEY IDENTITY,
+    ФИО NVARCHAR(150) NOT NULL,
+    Паспортные_данные CHAR(15) UNIQUE NOT NULL,
+    Пол CHAR(1) CHECK (Пол IN ('М', 'Ж')) NOT NULL
+);
+
+CREATE TABLE Бронирование (
+    id_брони INT PRIMARY KEY IDENTITY,
+    Дата_создания DATE NOT NULL DEFAULT GETDATE(),
+    Статус NVARCHAR(20) NOT NULL CHECK (Статус IN ('создана','подтверждена','отменена','завершена')),
+    Дата_последнего_изменения DATETIME NOT NULL DEFAULT GETDATE(),
+    Дата_предположительного_заселения DATE NOT NULL,
+    Предварительная_стоимость DECIMAL(10,2) NOT NULL,
+    id_клиента INT NOT NULL FOREIGN KEY REFERENCES Клиент(id_клиента)
+);
+
+CREATE TABLE Номер (
+    id_номера INT PRIMARY KEY IDENTITY,
+    Вместимость INT NOT NULL,
+    Этаж INT NOT NULL,
+    Комфортность NVARCHAR(15) NOT NULL,
+    Цена_сутки DECIMAL(10,2) NOT NULL
+);
+
+CREATE TABLE Номер_Бронирование (
+    id_номера INT NOT NULL FOREIGN KEY REFERENCES Номер(id_номера),
+    id_брони INT NOT NULL FOREIGN KEY REFERENCES Бронирование(id_брони),
+    PRIMARY KEY (id_номера, id_брони)
+);
+
+CREATE TABLE Заселение (
+    id_заселения INT PRIMARY KEY IDENTITY,
+    Предварительная_стоимость DECIMAL(10,2),
+    Фактическая_дата_выезда DATE NULL,
+    Итоговая_стоимость DECIMAL(10,2),
+    Дата_заселения DATE NOT NULL,
+    id_клиента INT NOT NULL FOREIGN KEY REFERENCES Клиент(id_клиента)
+);
+
+CREATE TABLE Заселение_Номер (
+    id_заселения INT NOT NULL FOREIGN KEY REFERENCES Заселение(id_заселения),
+    id_номера INT NOT NULL FOREIGN KEY REFERENCES Номер(id_номера),
+    PRIMARY KEY (id_заселения, id_номера)
+);
+
+CREATE TABLE Услуга (
+    id_услуги INT PRIMARY KEY IDENTITY,
+    Название NVARCHAR(50) NOT NULL,
+    Цена DECIMAL(10,2) NOT NULL
+);
+
+CREATE TABLE Заселение_Услуга (
+    id_заселения INT NOT NULL FOREIGN KEY REFERENCES Заселение(id_заселения),
+    id_услуги INT NOT NULL FOREIGN KEY REFERENCES Услуга(id_услуги),
+    PRIMARY KEY (id_заселения, id_услуги)
+);
+
+CREATE TABLE Оплата (
+    id_оплаты INT PRIMARY KEY IDENTITY,
+    Дата_оплаты DATE NOT NULL,
+    Сумма DECIMAL(10,2) NOT NULL,
+    Способ_оплаты NVARCHAR(30) NOT NULL,
+    id_заселения INT NOT NULL FOREIGN KEY REFERENCES Заселение(id_заселения)
+);
+```
