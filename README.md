@@ -137,20 +137,20 @@ CREATE TABLE Оплата (
 
 ## №2.2. Заполненные таблицы
 ### Клиент
-![image](/pictures/client.png)
+![image](/pictures/1.png)
 ### Номер
-![image](/pictures/nomer.png)
+![image](/pictures/2.png)
 ### Бронирование
-![image](/pictures/bron.png)
+![image](/pictures/3.png)
 ### Номер_Бронирование
-![image](/pictures/nombro.png)
+![image](/pictures/4.png)
 ### Заселение
-![image](/pictures/zasel.png)
+![image](/pictures/5.png)
 ### Заселение_Номер
-![image](/pictures/zasnom.png)
+![image](/pictures/6.png)
 ### Услуга
-![image](/pictures/yslygi.png)
+![image](/pictures/7.png)
 ### Заселение_Услуга
-![image](/pictures/zasysl.png)
+![image](/pictures/8.png)
 ### Оплата
-![image](/pictures/oplata.png)
+![image](/pictures/9.png)
