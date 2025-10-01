@@ -98,9 +98,9 @@ CREATE TABLE Номер_Бронирование (
 
 CREATE TABLE Заселение (
     ID INT PRIMARY KEY IDENTITY,
-    Предварительная_стоимость DECIMAL(10,2) CHECK (Предварительная_стоимость >= 0),
+    Предварительная_стоимость DECIMAL(10,2) CHECK (Предварительная_стоимость > 0),
     Фактическая_дата_выезда DATE NULL,
-    Итоговая_стоимость DECIMAL(10,2) CHECK (Итоговая_стоимость >= 0),
+    Итоговая_стоимость DECIMAL(10,2) CHECK (Итоговая_стоимость > 0),
     Дата_заселения DATE NULL,
     Клиент_ID INT NOT NULL FOREIGN KEY REFERENCES Клиент(ID)
 );
@@ -114,7 +114,7 @@ CREATE TABLE Заселение_Номер (
 CREATE TABLE Услуга (
     ID INT PRIMARY KEY IDENTITY,
     Название NVARCHAR(50) NOT NULL,
-    Цена DECIMAL(10,2) NOT NULL CHECK (Цена > 0)
+    Цена DECIMAL(10,2) NOT NULL CHECK (Цена >= 0)
 );
 
 CREATE TABLE Заселение_Услуга (
