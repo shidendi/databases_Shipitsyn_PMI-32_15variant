@@ -133,7 +133,7 @@ CREATE TABLE Оплата (
 ```
 
 ## №2.1. Диаграмма
-![image](/pictures/diag.png)
+![image](/pictures/diagram.png)
 
 ## №2.2. Заполненные таблицы
 ### Клиент
