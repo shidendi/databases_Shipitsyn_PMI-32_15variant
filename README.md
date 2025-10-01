@@ -66,24 +66,24 @@ ER-модель д.б. представлена в виде ER-диаграмм�
 
 ```
 CREATE TABLE Клиент (
-    клиент_id INT PRIMARY KEY IDENTITY,
+    ID INT PRIMARY KEY IDENTITY,
     ФИО NVARCHAR(150) NOT NULL,
     Паспортные_данные CHAR(15) UNIQUE NOT NULL,
     Пол CHAR(1) CHECK (Пол IN ('М', 'Ж')) NOT NULL
 );
 
 CREATE TABLE Бронирование (
-    бронь_id INT PRIMARY KEY IDENTITY,
+    ID INT PRIMARY KEY IDENTITY,
     Дата_создания DATE NOT NULL DEFAULT GETDATE(),
     Статус NVARCHAR(20) NOT NULL CHECK (Статус IN ('создана','отменена','завершена')),
     Дата_последнего_изменения DATETIME NOT NULL DEFAULT GETDATE(),
     Дата_предположительного_заселения DATE NOT NULL,
     Предварительная_стоимость DECIMAL(10,2) NOT NULL CHECK (Предварительная_стоимость > 0),
-    клиент_id INT NOT NULL FOREIGN KEY REFERENCES Клиент(клиент_id)
+    Клиент_ID INT NOT NULL FOREIGN KEY REFERENCES Клиент(ID)
 );
 
 CREATE TABLE Номер (
-    номер_id INT PRIMARY KEY IDENTITY,
+    ID INT PRIMARY KEY IDENTITY,
     Вместимость INT NOT NULL CHECK (Вместимость > 0),
     Этаж INT NOT NULL,
     Комфортность NVARCHAR(15) NOT NULL,
@@ -91,44 +91,44 @@ CREATE TABLE Номер (
 );
 
 CREATE TABLE Номер_Бронирование (
-    номер_id INT NOT NULL FOREIGN KEY REFERENCES Номер(номер_id),
-    бронь_id INT NOT NULL FOREIGN KEY REFERENCES Бронирование(бронь_id),
-    PRIMARY KEY (номер_id, бронь_id)
+    Номер_ID INT NOT NULL FOREIGN KEY REFERENCES Номер(ID),
+    Бронь_ID INT NOT NULL FOREIGN KEY REFERENCES Бронирование(ID),
+    PRIMARY KEY (Номер_ID, Бронь_ID)
 );
 
 CREATE TABLE Заселение (
-    заселение_id INT PRIMARY KEY IDENTITY,
+    ID INT PRIMARY KEY IDENTITY,
     Предварительная_стоимость DECIMAL(10,2) CHECK (Предварительная_стоимость >= 0),
     Фактическая_дата_выезда DATE NULL,
     Итоговая_стоимость DECIMAL(10,2) CHECK (Итоговая_стоимость >= 0),
     Дата_заселения DATE NULL,
-    клиент_id INT NOT NULL FOREIGN KEY REFERENCES Клиент(клиент_id)
+    Клиент_ID INT NOT NULL FOREIGN KEY REFERENCES Клиент(ID)
 );
 
 CREATE TABLE Заселение_Номер (
-    заселение_id INT NOT NULL FOREIGN KEY REFERENCES Заселение(заселение_id),
-    номер_id INT NOT NULL FOREIGN KEY REFERENCES Номер(номер_id),
-    PRIMARY KEY (заселение_id, номер_id)
+    Заселение_ID INT NOT NULL FOREIGN KEY REFERENCES Заселение(ID),
+    Номер_ID INT NOT NULL FOREIGN KEY REFERENCES Номер(ID),
+    PRIMARY KEY (Заселение_ID, Номер_ID)
 );
 
 CREATE TABLE Услуга (
-    услуга_id INT PRIMARY KEY IDENTITY,
+    ID INT PRIMARY KEY IDENTITY,
     Название NVARCHAR(50) NOT NULL,
-    Цена DECIMAL(10,2) NOT NULL CHECK (Цена >= 0)
+    Цена DECIMAL(10,2) NOT NULL CHECK (Цена > 0)
 );
 
 CREATE TABLE Заселение_Услуга (
-    заселение_id INT NOT NULL FOREIGN KEY REFERENCES Заселение(заселение_id),
-    услуга_id INT NOT NULL FOREIGN KEY REFERENCES Услуга(услуга_id),
-    PRIMARY KEY (заселение_id, услуга_id)
+    Заселение_ID INT NOT NULL FOREIGN KEY REFERENCES Заселение(ID),
+    Услуга_ID INT NOT NULL FOREIGN KEY REFERENCES Услуга(ID),
+    PRIMARY KEY (Заселение_ID, Услуга_ID)
 );
 
 CREATE TABLE Оплата (
-    оплата_id INT PRIMARY KEY IDENTITY,
+    ID INT PRIMARY KEY IDENTITY,
     Дата_оплаты DATE NOT NULL,
-    Сумма DECIMAL(10,2) NOT NULL CHECK (Сумма >= 0),
+    Сумма DECIMAL(10,2) NOT NULL CHECK (Сумма > 0),
     Способ_оплаты NVARCHAR(30) NOT NULL,
-    заселение_id INT NOT NULL FOREIGN KEY REFERENCES Заселение(заселение_id)
+    Заселение_ID INT NOT NULL FOREIGN KEY REFERENCES Заселение(ID)
 );
 ```
 
