@@ -78,16 +78,16 @@ CREATE TABLE Бронирование (
     Статус NVARCHAR(20) NOT NULL CHECK (Статус IN ('создана','отменена','завершена')),
     Дата_последнего_изменения DATETIME NOT NULL DEFAULT GETDATE(),
     Дата_предположительного_заселения DATE NOT NULL,
-    Предварительная_стоимость DECIMAL(10,2) NOT NULL,
+    Предварительная_стоимость DECIMAL(10,2) NOT NULL CHECK (Предварительная_стоимость > 0),
     клиент_id INT NOT NULL FOREIGN KEY REFERENCES Клиент(клиент_id)
 );
 
 CREATE TABLE Номер (
     номер_id INT PRIMARY KEY IDENTITY,
-    Вместимость INT NOT NULL,
+    Вместимость INT NOT NULL CHECK (Вместимость > 0),
     Этаж INT NOT NULL,
     Комфортность NVARCHAR(15) NOT NULL,
-    Цена_сутки DECIMAL(10,2) NOT NULL
+    Цена_сутки DECIMAL(10,2) NOT NULL CHECK (Цена_сутки > 0)
 );
 
 CREATE TABLE Номер_Бронирование (
@@ -98,9 +98,9 @@ CREATE TABLE Номер_Бронирование (
 
 CREATE TABLE Заселение (
     заселение_id INT PRIMARY KEY IDENTITY,
-    Предварительная_стоимость DECIMAL(10,2),
+    Предварительная_стоимость DECIMAL(10,2) CHECK (Предварительная_стоимость >= 0),
     Фактическая_дата_выезда DATE NULL,
-    Итоговая_стоимость DECIMAL(10,2),
+    Итоговая_стоимость DECIMAL(10,2) CHECK (Итоговая_стоимость >= 0),
     Дата_заселения DATE NULL,
     клиент_id INT NOT NULL FOREIGN KEY REFERENCES Клиент(клиент_id)
 );
@@ -114,7 +114,7 @@ CREATE TABLE Заселение_Номер (
 CREATE TABLE Услуга (
     услуга_id INT PRIMARY KEY IDENTITY,
     Название NVARCHAR(50) NOT NULL,
-    Цена DECIMAL(10,2) NOT NULL
+    Цена DECIMAL(10,2) NOT NULL CHECK (Цена >= 0)
 );
 
 CREATE TABLE Заселение_Услуга (
@@ -126,7 +126,7 @@ CREATE TABLE Заселение_Услуга (
 CREATE TABLE Оплата (
     оплата_id INT PRIMARY KEY IDENTITY,
     Дата_оплаты DATE NOT NULL,
-    Сумма DECIMAL(10,2) NOT NULL,
+    Сумма DECIMAL(10,2) NOT NULL CHECK (Сумма >= 0),
     Способ_оплаты NVARCHAR(30) NOT NULL,
     заселение_id INT NOT NULL FOREIGN KEY REFERENCES Заселение(заселение_id)
 );
