@@ -4,7 +4,8 @@
   <a href="#-lab2"><img alt="lab2" src="https://img.shields.io/badge/Lab2-blue"></a>
   <a href="#-lab3"><img alt="lab3" src="https://img.shields.io/badge/Lab3-blue"></a>
 </p>
-<h3 align="center"> <a href="#client"></a> Вариант 15. Гостиница
+<h3 align="center"> <a href="#client"></a> 
+  Вариант 15. Гостиница
   Список номеров: вместимость, комфортность, этаж, цена.
   Список клиентов: ФИО, паспорт, пол.
   Информация о сдаче номеров: дата заселения, срок поселения, фактическая дата освобождения, предварительная стоимость проживания.
