@@ -49,6 +49,12 @@
   <p>По имеющейся ER-модели создать реляционную модель данных и отобразить её в виде списка сущностей с их атрибутами и типами атрибутов.  
   Для атрибутов указать, являются ли они первичными или внешними ключами.</p>
 
+# <img src="https://github.com/user-attachments/assets/e080adec-6af7-4bd2-b232-d43cb37024ac" width="20" height="20"/> Lab1
+[Назад](#content)
+<h3 align="center">
+  <a href="#client"></a>
+</h3>
+
   <h4>№1. ER-модель</h4>
   <img src="/pictures/ER.png" alt="ER-модель"/>
 
