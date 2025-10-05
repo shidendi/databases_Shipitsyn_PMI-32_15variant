@@ -62,8 +62,13 @@
   <img src="/pictures/REL.png" alt="Реляционная модель"/>
 </div>
 
+# <img src="https://github.com/user-attachments/assets/e080adec-6af7-4bd2-b232-d43cb37024ac" width="20" height="20"/> Lab2
+[Назад](#content)
+<h3 align="center">
+  <a href="#client"></a>
+</h3>
+
 <div>
-  <h4>Lab2</h4>
   <p><b>Задание:</b> в соответствии с реляционной моделью данных, разработанной в Лаб. №1, создать реляционную БД на учебном сервере БД.</p>
 
   <p><b>Необходимо:</b></p>
