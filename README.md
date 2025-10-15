@@ -381,4 +381,4 @@ SELECT * FROM Оплата
     <li>Среди всех клиентов, наиболее часто пользующихся услугами гостиницы, найти клиентов с максимальным сроком проживания.</li>
   </ol>
 </div>
-https://github.com/shidendi/databases_Shipitsyn_PMI-32_15variant/blob/Doc/Шипицын_ПМИ-32БО.docx
+https://github.com/shidendi/databases_Shipitsyn_PMI-32_15variant/raw/main/Doc/Шипицын_ПМИ-32БО.docx
