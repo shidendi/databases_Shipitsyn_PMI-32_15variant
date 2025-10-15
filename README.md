@@ -382,3 +382,5 @@ SELECT * FROM Оплата
   </ol>
 </div>
 https://github.com/shidendi/databases_Shipitsyn_PMI-32_15variant/raw/main/Doc/Шипицын_ПМИ-32БО.docx
+<a href="https://github.com/shidendi/databases_Shipitsyn_PMI-32_15variant/raw/main/Doc/Шипицын_ПМИ-32БО.docx" target="_blank">Скачать документ</a>
+
