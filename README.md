@@ -399,4 +399,4 @@ INSERT INTO Оплата (Дата_оплаты, Сумма, Способ_опл
 <a href="https://github.com/shidendi/databases_Shipitsyn_PMI-32_15variant/raw/main/Doc/Шипицын_ПМИ-32БО.docx" target="_blank">Лабораторная №3</a>
 
 
-# <img src="https://github.com/user-attachments/assets/e080adec-6af7-4bd2-b232-d43cb37024ac" width="20" height="20"/> Lab1
+# <img src="https://github.com/user-attachments/assets/e080adec-6af7-4bd2-b232-d43cb37024ac" width="20" height="20"/> Lab4
