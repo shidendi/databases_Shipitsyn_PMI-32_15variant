@@ -3,6 +3,7 @@
   <a href="#-lab1"><img alt="lab1" src="https://img.shields.io/badge/Lab1-blue"></a>
   <a href="#-lab2"><img alt="lab2" src="https://img.shields.io/badge/Lab2-blue"></a>
   <a href="#-lab3"><img alt="lab3" src="https://img.shields.io/badge/Lab3-blue"></a>
+  <a href="#-lab4"><img alt="lab4" src="https://img.shields.io/badge/Lab4-blue"></a>
 </p>
 <h3 align="center"> <a href="#client"></a> 
   Вариант 15. Гостиница
@@ -397,3 +398,5 @@ INSERT INTO Оплата (Дата_оплаты, Сумма, Способ_опл
 </div>
 <a href="https://github.com/shidendi/databases_Shipitsyn_PMI-32_15variant/raw/main/Doc/Шипицын_ПМИ-32БО.docx" target="_blank">Лабораторная №3</a>
 
+
+# <img src="https://github.com/user-attachments/assets/e080adec-6af7-4bd2-b232-d43cb37024ac" width="20" height="20"/> Lab1
