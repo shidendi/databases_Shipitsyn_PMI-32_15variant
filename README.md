@@ -463,19 +463,25 @@ SELECT dbo.Клиент_МаксимальноеПроживание() AS Кли
 </div>
 
 
-      <code><pre>
-      CREATE FUNCTION dbo.Клиент_МаксимальноеПроживание()
+
+  <pre><code>
+IF OBJECT_ID(N'dbo.Клиент_МаксимальноеПроживание', N'FN') IS NOT NULL
+    DROP FUNCTION dbo.Клиент_МаксимальноеПроживание;
+GO
+
+CREATE FUNCTION dbo.Клиент_МаксимальноеПроживание()
 RETURNS NVARCHAR(150)
 AS
 BEGIN
     DECLARE @ФИО NVARCHAR(150);
+
     ;WITH Проживания AS (
         SELECT 
             z.Клиент_ID,
-            SUM(DATEDIFF(DAY, z.Дата_заселения, z.Фактическая_дата_выезда)) AS Всего_дней -- длител-ть всех заселений
+            SUM(DATEDIFF(DAY, z.Дата_заселения, z.Фактическая_дата_выезда)) AS Всего_дней
         FROM Заселение z
-        WHERE z.Дата_заселения IS NOT NULL -- засчеление начато
-          AND z.Фактическая_дата_выезда IS NOT NULL -- и завершено(??)
+        WHERE z.Дата_заселения IS NOT NULL
+          AND z.Фактическая_дата_выезда IS NOT NULL
         GROUP BY z.Клиент_ID
     ),
     МаксПроживание AS (
@@ -486,10 +492,9 @@ BEGIN
     FROM Проживания p
     JOIN МаксПроживание m ON p.Всего_дней = m.Макс_дней
     JOIN Клиент k ON k.ID = p.Клиент_ID
-    ORDER BY k.ID;  -- клиент с наименьшим айди
+    ORDER BY k.ID;
+
     RETURN @ФИО;
 END;
 GO
-
-SELECT dbo.Клиент_МаксимальноеПроживание() AS Клиент_с_максимальным_проживанием;
-        </code></pre>
+  </code></pre>
