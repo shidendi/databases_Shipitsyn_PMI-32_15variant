@@ -577,6 +577,68 @@ SELECT @Дата AS [Дата последнего заселения];
 </code></pre>
 <img src="pictures/4.1.3.png" alt="Схема 4.1.3" width="450">
     <li><b> Процедура, вызывающая вложенную процедуру, которая подсчитывает среднюю посещаемость клиентами нашей гостиницы (т.е., сколько раз в среднем каждый клиент пользовался нашими услугами). Главная процедура выводит список клиентов, число посещений которых больше среднего.</li>
+<pre><code>
+ CREATE PROCEDURE dbo.proc_Средняя_Посещаемость
+    @Среднее FLOAT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- общ число заселен и клиентов
+    DECLARE @ВсегоЗаселений INT, @ВсегоКлиентов INT;
+
+    SELECT @ВсегоЗаселений = ISNULL(COUNT(*), 0) FROM Заселение;
+    SELECT @ВсегоКлиентов = ISNULL(COUNT(*), 0) FROM Клиент;
+
+    IF @ВсегоКлиентов = 0
+        SET @Среднее = 0; 
+    -- средуха
+    ELSE
+        SET @Среднее = CAST(@ВсегоЗаселений AS FLOAT) / @ВсегоКлиентов;
+END;
+GO
+
+CREATE PROCEDURE dbo.proc_Клиенты_Выше_Среднего
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @Среднее FLOAT;
+    DECLARE @КлиентID INT, @ФИО NVARCHAR(150), @Посещений INT;
+
+    -- влож проц
+    EXEC dbo.proc_Средняя_Посещаемость @Среднее OUTPUT;
+
+    PRINT 'Среднее количество посещений клиентов: ' + CAST(@Среднее AS NVARCHAR(20));
+    PRINT 'Клиенты, число посещений которых выше среднего:';
+
+    DECLARE cur CURSOR FOR
+        SELECT c.ID, c.ФИО, ISNULL(COUNT(z.ID),0) AS Количество_Посещений
+        FROM Клиент c
+        LEFT JOIN Заселение z ON c.ID = z.Клиент_ID
+        GROUP BY c.ID, c.ФИО;
+
+    OPEN cur;
+    FETCH NEXT FROM cur INTO @КлиентID, @ФИО, @Посещений;
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- посещ > среднего
+        IF @Посещений > @Среднее
+        BEGIN
+            PRINT CONCAT(@ФИО, ' — ', @Посещений, ' посещений');
+        END;
+
+        FETCH NEXT FROM cur INTO @КлиентID, @ФИО, @Посещений;
+    END;
+
+    CLOSE cur;
+    DEALLOCATE cur;
+END;
+GO
+EXEC dbo.proc_Клиенты_Выше_Среднего;   
+</code></pre>
+<img src="pictures/4.1.4.png" alt="Схема 4.1.4" width="300">
   </ol>
 
   <h4>3 пользовательские функции:</h4>
