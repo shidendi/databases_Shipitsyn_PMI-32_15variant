@@ -636,6 +636,47 @@ SELECT * FROM dbo.Номера_Обманули();
 </code></pre>
 <img src="pictures/4.2.2.png" alt="Схема 4.2.2" width="300">
     <li><b>Multi-statement-функция, возвращающая список забронированных номеров, в которые клиенты так и не въехали за весь период брони.</li>
+<pre><code>
+CREATE FUNCTION dbo.Номера_Без_Заселения()
+RETURNS @Результат TABLE (
+    Номер_ID INT,
+    Комфортность NVARCHAR(15),
+    Цена_сутки DECIMAL(10,2)
+)
+AS
+BEGIN
+    DECLARE 
+        @Номер_ID INT, 
+        @Комфортность NVARCHAR(15), 
+        @Цена_сутки DECIMAL(10,2);
+    -- есть в брони, но без заселения
+    DECLARE cur CURSOR FOR
+        SELECT DISTINCT n.ID, n.Комфортность, n.Цена_сутки
+        FROM Номер n
+        JOIN Номер_Бронирование nb ON nb.Номер_ID = n.ID
+        JOIN Бронирование b ON b.ID = nb.Бронь_ID
+        WHERE b.Статус = 'создана'
+          AND n.ID NOT IN (
+              SELECT DISTINCT zn.Номер_ID
+              FROM Заселение_Номер zn
+          );
+    OPEN cur;
+    FETCH NEXT FROM cur INTO @Номер_ID, @Комфортность, @Цена_сутки;
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        INSERT INTO @Результат (Номер_ID, Комфортность, Цена_сутки)
+        VALUES (@Номер_ID, @Комфортность, @Цена_сутки);
+        FETCH NEXT FROM cur INTO @Номер_ID, @Комфортность, @Цена_сутки;
+    END;
+    CLOSE cur;
+    DEALLOCATE cur;
+    RETURN;
+END;
+GO
+
+SELECT * FROM dbo.Номера_Без_Заселения();
+</code></pre>
+<img src="pictures/4.2.3.png" alt="Схема 4.2.3" width="300">
   </ol>
 
   <h4>Создать  3 триггера:</h4>
