@@ -799,6 +799,73 @@ WHERE ID = 1;
 </code></pre>
 <img src="pictures/4.3.2.png" alt="Схема 4.3.2" width="450">
     <li><b>Замещающий триггер на операцию удаления номера из списка номеров – если номер на данный момент занят, то не удаляем его, выводим сообщение о невозможности удаления; если не занят – удаляем его и всю информацию о его сдаче и бронировании</li>
+<pre><code>
+ CREATE TRIGGER trg_Удаление_Номера
+ON Номер
+INSTEAD OF DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    DECLARE 
+        @Номер_ID INT,
+        @Занят BIT;
+    DECLARE cur CURSOR FOR
+        SELECT ID FROM deleted;  -- делетед временная табл с удаленными
+    OPEN cur;
+    FETCH NEXT FROM cur INTO @Номер_ID;
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- занят ли номер
+        IF EXISTS (
+            SELECT 1
+            FROM Заселение_Номер zn
+            JOIN Заселение z ON zn.Заселение_ID = z.ID
+            WHERE zn.Номер_ID = @Номер_ID
+              AND (z.Фактическая_дата_выезда IS NULL OR z.Фактическая_дата_выезда > GETDATE())
+        )
+        BEGIN
+            PRINT CONCAT('Номер ID = ', @Номер_ID, ' сейчас занят и не может быть удалён.');
+        END
+        ELSE
+        BEGIN
+            PRINT CONCAT('Номер ID = ', @Номер_ID, ' свободен. Удаляем связанные записи...');
+            -- удалит услуги типа
+            DELETE FROM Заселение_Услуга
+            WHERE Заселение_ID IN (
+                SELECT Заселение_ID FROM Заселение_Номер WHERE Номер_ID = @Номер_ID
+            );
+            -- удал оплата
+            DELETE FROM Оплата
+            WHERE Заселение_ID IN (
+                SELECT Заселение_ID FROM Заселение_Номер WHERE Номер_ID = @Номер_ID
+            );
+            -- удалит засел_номер
+            DELETE FROM Заселение_Номер WHERE Номер_ID = @Номер_ID;
+            -- удалит засел
+            DELETE FROM Заселение
+            WHERE ID NOT IN (SELECT Заселение_ID FROM Заселение_Номер);
+            -- удалит номер_брон
+            DELETE FROM Номер_Бронирование WHERE Номер_ID = @Номер_ID;
+            -- удалит брон
+            DELETE FROM Бронирование
+            WHERE ID NOT IN (SELECT Бронь_ID FROM Номер_Бронирование);
+            -- удалит номер
+            DELETE FROM Номер WHERE ID = @Номер_ID;
+            PRINT CONCAT('Номер ID = ', @Номер_ID, ' и все связанные данные успешно удалены.');
+        END;
+        FETCH NEXT FROM cur INTO @Номер_ID;
+    END;
+    CLOSE cur;
+    DEALLOCATE cur;
+END;
+GO
+-- свободен
+DELETE FROM Номер WHERE ID = 5;
+
+-- занят
+DELETE FROM Номер WHERE ID = 7; 
+</code></pre>
+<img src="pictures/4.3.3.png" alt="Схема 4.3.3" width="450">
   </ol>
 
   <p><b>Обязательно предусмотреть обработку НЕСКОЛЬКИХ записей! (там, где необходимо, использовать КУРСОР!)</b>.</p>
