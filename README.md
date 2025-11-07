@@ -638,7 +638,7 @@ END;
 GO
 EXEC dbo.proc_Клиенты_Выше_Среднего;   
 </code></pre>
-<img src="pictures/4.1.4.png" alt="Схема 4.1.4" width="300">
+<img src="pictures/4.1.4.png" alt="Схема 4.1.4" width="600">
   </ol>
 
   <h4>3 пользовательские функции:</h4>
