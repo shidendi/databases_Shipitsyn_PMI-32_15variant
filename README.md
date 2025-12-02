@@ -955,7 +955,7 @@ DELETE FROM Номер WHERE ID = 7;
   <p><b>Отчет предоставить в виде:</b></p>
   <ul>
     <li>Схема узлов и ребер.</li>
-<img src="pictures/nodes.png" alt="Узлы и рёбра" width="550">
+<img src="pictures/nodes.png" alt="Узлы и рёбра" width="650">
     <li>Скрипт для создания и заполнения графовых таблиц</li>
 <pre><code>
 -- удалить если есть
