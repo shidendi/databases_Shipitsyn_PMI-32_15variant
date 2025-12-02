@@ -1094,6 +1094,31 @@ GO
   </ul>
 <ol>
   <li>Найти номера, не занятые и не забронированные на данный момент:</li>
+<pre><code>
+DECLARE @today DATE = GETDATE();
+
+-- НЕ связаны с активными бронированиями или заселениями на сегодня
+SELECT DISTINCT r.*
+FROM Graph_Room r
+WHERE r.id NOT IN (
+    -- с активными бронированиями (статус 'создана' и дата заселения в будущем или сегодня)
+    SELECT r2.id
+    FROM Graph_Client c, HAS_BOOKING hb, Graph_Booking b, INCLUDES_ROOM ir, Graph_Room r2
+    WHERE MATCH(c-(hb)->b-(ir)->r2)
+        AND b.status = 'создана'
+        AND b.expected_checkin <= @today
+    UNION
+    -- с активными заселениями (дата заезда в прошлом/сегодня, дата выезда NULL или в будущем)
+    SELECT r3.id
+    FROM Graph_Stay s, STAYS_IN si, Graph_Room r3
+    WHERE MATCH(s-(si)->r3)
+        AND s.checkin_date IS NOT NULL
+        AND s.checkin_date <= @today
+        AND (s.actual_checkout IS NULL OR s.actual_checkout > @today)
+)
+ORDER BY r.id;
+</code></pre>
+<img src="pictures/6.1.png" alt="Схема 6.1" width="450">
   <li>Найти клиентов, выехавших из номера раньше срока, указанного в договоре</li>
   <li>Найти номера, которые ни разу не сдавались с начала текущего года:</li>
   <li>Найти клиентов, забронировавших номер, но так и не въехавших в него:</li>
