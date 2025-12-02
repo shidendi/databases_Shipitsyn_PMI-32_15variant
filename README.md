@@ -956,6 +956,141 @@ DELETE FROM Номер WHERE ID = 7;
   <ul>
     <li>Схема узлов и ребер.</li>
     <li>Скрипт для создания и заполнения графовых таблиц</li>
+<pre><code>
+GO
+-- удалить если есть
+DROP TABLE IF EXISTS BOOKS;
+DROP TABLE IF EXISTS STAYS;
+DROP TABLE IF EXISTS HAS_BOOKING;
+DROP TABLE IF EXISTS INCLUDES_ROOM;
+DROP TABLE IF EXISTS HAS_SERVICE;
+DROP TABLE IF EXISTS PAID_FOR;
+DROP TABLE IF EXISTS Graph_Client;
+DROP TABLE IF EXISTS Graph_Booking;
+DROP TABLE IF EXISTS Graph_Room;
+DROP TABLE IF EXISTS Graph_Stay;
+DROP TABLE IF EXISTS Graph_Service;
+GO
+
+-- узлы
+CREATE TABLE Graph_Client (
+    id INT PRIMARY KEY,
+    full_name NVARCHAR(150) NOT NULL,
+    passport CHAR(15) NOT NULL,
+    gender CHAR(1) NOT NULL
+) AS NODE;
+
+CREATE TABLE Graph_Booking (
+    id INT PRIMARY KEY,
+    status NVARCHAR(20) NOT NULL,
+    created_date DATE NOT NULL,
+    last_modified DATETIME NOT NULL,
+    expected_checkin DATE NOT NULL,
+    preliminary_cost DECIMAL(10,2) NOT NULL
+) AS NODE;
+
+CREATE TABLE Graph_Room (
+    id INT PRIMARY KEY,
+    capacity INT NOT NULL,
+    floor INT NOT NULL,
+    comfort NVARCHAR(15) NOT NULL,
+    price_per_day DECIMAL(10,2) NOT NULL
+) AS NODE;
+
+CREATE TABLE Graph_Stay (
+    id INT PRIMARY KEY,
+    preliminary_cost DECIMAL(10,2),
+    actual_checkout DATE,
+    final_cost DECIMAL(10,2),
+    checkin_date DATE,
+    client_id INT NOT NULL
+) AS NODE;
+
+CREATE TABLE Graph_Service (
+    id INT PRIMARY KEY,
+    service_name NVARCHAR(50) NOT NULL,
+    price DECIMAL(10,2) NOT NULL
+) AS NODE;
+GO
+
+-- ребра
+CREATE TABLE HAS_BOOKING AS EDGE;-- Клиент -> Бронирование
+CREATE TABLE INCLUDES_ROOM AS EDGE; -- Бронирование -> Номер
+CREATE TABLE STAYS_IN AS EDGE; -- Заселение -> Номер
+CREATE TABLE HAS_SERVICE AS EDGE; -- Заселение -> Услуга
+CREATE TABLE PAID_FOR AS EDGE; -- Заселение -> Оплата
+GO
+
+-- заполнение узлов
+INSERT INTO Graph_Client (id, full_name, passport, gender)
+SELECT ID, ФИО, Паспортные_данные, Пол FROM Клиент;
+
+INSERT INTO Graph_Booking (id, status, created_date, last_modified, expected_checkin, preliminary_cost)
+SELECT ID, Статус, Дата_создания, Дата_последнего_изменения, Дата_предположительного_заселения, Предварительная_стоимость
+FROM Бронирование;
+
+INSERT INTO Graph_Room (id, capacity, floor, comfort, price_per_day)
+SELECT ID, Вместимость, Этаж, Комфортность, Цена_сутки FROM Номер;
+
+INSERT INTO Graph_Stay (id, preliminary_cost, actual_checkout, final_cost, checkin_date, client_id)
+SELECT ID, Предварительная_стоимость, Фактическая_дата_выезда, Итоговая_стоимость, Дата_заселения, Клиент_ID
+FROM Заселение;
+
+INSERT INTO Graph_Service (id, service_name, price)
+SELECT ID, Название, Цена FROM Услуга;
+GO
+
+GO
+-- HAS_BOOKING: Клиент -> Бронирование
+INSERT INTO HAS_BOOKING ($from_id, $to_id)
+SELECT c.$node_id, b.$node_id
+FROM Graph_Client AS c
+JOIN Бронирование br ON c.id = br.Клиент_ID
+JOIN Graph_Booking AS b ON b.id = br.ID;
+
+-- INCLUDES_ROOM: Бронирование -> Номер
+INSERT INTO INCLUDES_ROOM ($from_id, $to_id)
+SELECT b.$node_id, r.$node_id
+FROM Graph_Booking AS b
+JOIN Номер_Бронирование nb ON b.id = nb.Бронь_ID
+JOIN Graph_Room AS r ON r.id = nb.Номер_ID;
+
+-- STAYS_IN: Заселение -> Номер
+INSERT INTO STAYS_IN ($from_id, $to_id)
+SELECT s.$node_id, r.$node_id
+FROM Graph_Stay AS s
+JOIN Заселение_Номер sn ON s.id = sn.Заселение_ID
+JOIN Graph_Room AS r ON r.id = sn.Номер_ID;
+
+-- HAS_SERVICE: Заселение -> Услуга
+INSERT INTO HAS_SERVICE ($from_id, $to_id)
+SELECT s.$node_id, srv.$node_id
+FROM Graph_Stay AS s
+JOIN Заселение_Услуга su ON s.id = su.Заселение_ID
+JOIN Graph_Service AS srv ON srv.id = su.Услуга_ID;
+
+-- PAID_FOR: Заселение -> Оплата
+-- отдельная таблица узлов оплат нужна(???)
+CREATE TABLE Graph_Payment (
+    id INT PRIMARY KEY,
+    payment_date DATE NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    payment_method NVARCHAR(30) NOT NULL
+) AS NODE;
+
+-- заполнение узлов оплат
+INSERT INTO Graph_Payment (id, payment_date, amount, payment_method)
+SELECT ID, Дата_оплаты, Сумма, Способ_оплаты
+FROM Оплата;
+
+-- связи PAID_FOR
+INSERT INTO PAID_FOR ($from_id, $to_id)
+SELECT s.$node_id, p.$node_id
+FROM Graph_Stay AS s
+JOIN Оплата AS pay ON s.id = pay.Заселение_ID
+JOIN Graph_Payment AS p ON p.id = pay.ID;
+GO
+<\code><\pre>
     <li>Запросы из задания 3.2 к двум моделям(реляционная, графовая).</li>
   </ul>
 </div>
