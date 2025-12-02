@@ -957,7 +957,6 @@ DELETE FROM Номер WHERE ID = 7;
     <li>Схема узлов и ребер.</li>
     <li>Скрипт для создания и заполнения графовых таблиц</li>
 <pre><code>
-GO
 -- удалить если есть
 DROP TABLE IF EXISTS BOOKS;
 DROP TABLE IF EXISTS STAYS;
@@ -1090,7 +1089,7 @@ FROM Graph_Stay AS s
 JOIN Оплата AS pay ON s.id = pay.Заселение_ID
 JOIN Graph_Payment AS p ON p.id = pay.ID;
 GO
-<\code><\pre>
+</code></pre>
     <li>Запросы из задания 3.2 к двум моделям(реляционная, графовая).</li>
   </ul>
 </div>
