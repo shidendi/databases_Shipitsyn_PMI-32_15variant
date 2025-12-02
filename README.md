@@ -1120,6 +1120,36 @@ ORDER BY r.id;
 </code></pre>
 <img src="pictures/6.1.png" alt="Схема 6.1" width="450">
   <li>Найти клиентов, выехавших из номера раньше срока, указанного в договоре</li>
+<pre><code>
+SELECT DISTINCT
+    c.full_name AS ФИО,
+    c.passport AS Паспорт,
+    s.checkin_date AS Дата_заселения,
+    s.actual_checkout AS Фактический_выезд,
+    DATEADD(DAY, ROUND(s.preliminary_cost / r.price_per_day, 0), s.checkin_date) AS Плановый_выезд,
+    DATEDIFF(DAY, s.actual_checkout,DATEADD(DAY, ROUND(s.preliminary_cost / r.price_per_day, 0), s.checkin_date)
+    ) AS Дней_раньше_срока
+FROM 
+    Graph_Client c,
+    Graph_Booking b,
+    Graph_Room r,
+    Graph_Stay s,
+    HAS_BOOKING hb,
+    INCLUDES_ROOM ir,
+    STAYS_IN si
+WHERE 
+    -- Клиент -> Бронирование -> Номер
+    MATCH(c-(hb)->b-(ir)->r)
+    -- Заселение -> Номер
+    AND MATCH(s-(si)->r)
+    AND c.id = s.client_id
+    AND s.actual_checkout IS NOT NULL  -- только завершенные заселения
+    AND s.checkin_date IS NOT NULL
+    -- расчет планового выезда на основе предварительной стоимости и цены номера
+    AND s.actual_checkout < DATEADD(DAY, ROUND(s.preliminary_cost / r.price_per_day, 0),s.checkin_date)
+ORDER BY Дней_раньше_срока DESC;
+</code></pre>
+<img src="pictures/6.2.png" alt="Схема 6.2" width="450">
   <li>Найти номера, которые ни разу не сдавались с начала текущего года:</li>
   <li>Найти клиентов, забронировавших номер, но так и не въехавших в него:</li>
   <li>Среди всех клиентов, наиболее часто пользующихся услугами гостиницы, найти клиентов с максимальным сроком проживания:</li>
