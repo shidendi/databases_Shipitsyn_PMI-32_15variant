@@ -1176,7 +1176,91 @@ ORDER BY r.id;
 </code></pre>
 <img src="pictures/6.3.png" alt="Схема 6.3" width="600">
   <li>Найти клиентов, забронировавших номер, но так и не въехавших в него:</li>
+<pre><code>
+-- Клиенты с бронированием, но без соответствующего заселения
+SELECT DISTINCT
+    c.id AS Клиент_ID,
+    c.full_name AS ФИО,
+    b.id AS Бронь_ID,
+    b.expected_checkin AS Дата_предположительного_заселения,
+    b.status AS Статус
+FROM Graph_Client c, HAS_BOOKING hb, Graph_Booking b
+WHERE MATCH(c-(hb)->b)  -- Клиент -> Бронирование
+  AND b.status IN ('создана', 'завершена')
+  AND NOT EXISTS (
+    -- есть ли заселение для этого клиента с тем же номером, что и в брони
+    SELECT 1
+    FROM Graph_Stay s, STAYS_IN si, Graph_Room r, INCLUDES_ROOM ir
+    WHERE MATCH(s-(si)->r)  -- Заселение -> Номер
+      AND MATCH(b-(ir)->r)  -- Бронь -> Тот же номер
+      AND s.client_id = c.id  -- заселение того же клиента
+  )
+ORDER BY c.full_name;
+</code></pre>
+<img src="pictures/6.4.png" alt="Схема 6.4" width="600">
   <li>Среди всех клиентов, наиболее часто пользующихся услугами гостиницы, найти клиентов с максимальным сроком проживания:</li>
+<pre><code>
+-- частые услуги
+WITH ЧастыеПользователиУслуг AS (
+    SELECT 
+        c.id AS client_id,
+        c.full_name AS ФИО,
+        COUNT(DISTINCT sv.id) AS количество_услуг
+    FROM Graph_Client c
+    -- Клиент -> Бронирование
+    JOIN HAS_BOOKING hb ON c.$node_id = hb.$from_id
+    JOIN Graph_Booking b ON hb.$to_id = b.$node_id
+    -- cвязь к заселению по client_id
+    JOIN Graph_Stay s ON s.client_id = c.id
+    -- Заселение -> Услуга
+    JOIN HAS_SERVICE hs ON s.$node_id = hs.$from_id
+    JOIN Graph_Service sv ON hs.$to_id = sv.$node_id
+    GROUP BY c.id, c.full_name
+    -- минимум 2 уникальные услуги
+    HAVING COUNT(DISTINCT sv.id) >= 2
+),
+
+-- срок проживания для заверешенных
+СрокиПроживания AS (
+    SELECT 
+        c.id AS client_id,
+        c.full_name AS ФИО,
+        s.id AS stay_id,
+        s.checkin_date AS дата_заселения,
+        s.actual_checkout AS дата_выезда,
+        -- расчет количества дней проживания
+        DATEDIFF(DAY, s.checkin_date, s.actual_checkout) AS дней_проживания
+    FROM Graph_Client c
+    -- связь с бронированием
+    JOIN HAS_BOOKING hb ON c.$node_id = hb.$from_id
+    JOIN Graph_Booking b ON hb.$to_id = b.$node_id
+    -- основная связь: клиент и его заселения
+    JOIN Graph_Stay s ON s.client_id = c.id
+    -- только завершенные заселения
+    WHERE s.checkin_date IS NOT NULL
+      AND s.actual_checkout IS NOT NULL
+)
+
+-- основной запрос
+SELECT 
+    c.id AS Клиент_ID,
+    c.full_name AS ФИО,
+    -- макс срок проживания клиента
+    MAX(sp.дней_проживания) AS Максимальный_срок_проживания,
+    cpu.количество_услуг AS Количество_использованных_услуг
+FROM Graph_Client c
+JOIN ЧастыеПользователиУслуг cpu ON c.id = cpu.client_id
+JOIN СрокиПроживания sp ON c.id = sp.client_id
+GROUP BY c.id, c.full_name, cpu.количество_услуг
+-- только клиенты с макс сроком среди всех частых пользователей услуг
+HAVING MAX(sp.дней_проживания) = (
+    SELECT MAX(sp2.дней_проживания) 
+    FROM СрокиПроживания sp2 
+    WHERE sp2.client_id IN (SELECT client_id FROM ЧастыеПользователиУслуг)
+)
+ORDER BY Максимальный_срок_проживания DESC;
+</code></pre>
+<img src="pictures/6.5.png" alt="Схема 6.5" width="550">
 </ol>
 </div>
 
