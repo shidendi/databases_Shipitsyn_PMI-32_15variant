@@ -1118,7 +1118,7 @@ WHERE r.id NOT IN (
 )
 ORDER BY r.id;
 </code></pre>
-<img src="pictures/6.1.png" alt="Схема 6.1" width="450">
+<img src="pictures/6.1.png" alt="Схема 6.1" width="500">
   <li>Найти клиентов, выехавших из номера раньше срока, указанного в договоре</li>
 <pre><code>
 SELECT DISTINCT
@@ -1149,7 +1149,7 @@ WHERE
     AND s.actual_checkout < DATEADD(DAY, ROUND(s.preliminary_cost / r.price_per_day, 0),s.checkin_date)
 ORDER BY Дней_раньше_срока DESC;
 </code></pre>
-<img src="pictures/6.2.png" alt="Схема 6.2" width="450">
+<img src="pictures/6.2.png" alt="Схема 6.2" width="600">
   <li>Найти номера, которые ни разу не сдавались с начала текущего года:</li>
   <li>Найти клиентов, забронировавших номер, но так и не въехавших в него:</li>
   <li>Среди всех клиентов, наиболее часто пользующихся услугами гостиницы, найти клиентов с максимальным сроком проживания:</li>
