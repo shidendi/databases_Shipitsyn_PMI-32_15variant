@@ -1151,6 +1151,30 @@ ORDER BY Дней_раньше_срока DESC;
 </code></pre>
 <img src="pictures/6.2.png" alt="Схема 6.2" width="600">
   <li>Найти номера, которые ни разу не сдавались с начала текущего года:</li>
+<pre><code>
+SELECT DISTINCT r.id AS Номер_ID, 
+       r.comfort AS Комфортность,
+       r.capacity AS Вместимость,
+       r.floor AS Этаж,
+       r.price_per_day AS Цена_сутки
+FROM Graph_Room r
+WHERE NOT EXISTS (
+    -- проверка не сдавался с начала года
+    SELECT 1
+    FROM Graph_Stay s, STAYS_IN si
+    WHERE MATCH(s-(si)->r) -- заселение -> номер
+      AND s.checkin_date >= '2025-01-01'
+)
+AND NOT EXISTS (
+    -- не забронирован и нет в активных бронях
+    SELECT 1
+    FROM Graph_Booking b, INCLUDES_ROOM ir
+    WHERE MATCH(b-(ir)->r) -- бронирование -> номер
+      AND b.status IN ('создана', 'завершена')
+)
+ORDER BY r.id;
+</code></pre>
+<img src="pictures/6.3.png" alt="Схема 6.3" width="600">
   <li>Найти клиентов, забронировавших номер, но так и не въехавших в него:</li>
   <li>Среди всех клиентов, наиболее часто пользующихся услугами гостиницы, найти клиентов с максимальным сроком проживания:</li>
 </ol>
