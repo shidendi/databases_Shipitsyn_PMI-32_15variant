@@ -4,7 +4,8 @@
   <a href="#-lab2"><img alt="lab2" src="https://img.shields.io/badge/Lab2-blue"></a>
   <a href="#-lab3"><img alt="lab3" src="https://img.shields.io/badge/Lab3-blue"></a>
   <a href="#-lab4"><img alt="lab4" src="https://img.shields.io/badge/Lab4-blue"></a>
-    <a href="#-lab6"><img alt="lab6" src="https://img.shields.io/badge/Lab6-blue"></a>
+  <a href="#-lab6"><img alt="lab6" src="https://img.shields.io/badge/Lab6-blue"></a>
+  <a href="#-lab7"><img alt="lab7" src="https://img.shields.io/badge/Lab7-blue"></a>
 </p>
 <h3 align="center"> <a href="#client"></a> 
   Вариант 15. Гостиница
@@ -1265,4 +1266,9 @@ ORDER BY Максимальный_срок_проживания DESC;
 </ol>
 </div>
 
+# <img src="https://github.com/user-attachments/assets/e080adec-6af7-4bd2-b232-d43cb37024ac" width="20" height="20"/> Lab7
+[Назад](#content)
+<h3 align="center">
+  <a href="#client"></a>
+</h3>
 
