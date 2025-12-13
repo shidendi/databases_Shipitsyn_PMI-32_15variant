@@ -965,6 +965,73 @@ DELETE FROM Номер WHERE ID = 7;
   <p>Работа сдается очно.</p>
 </div>
 
+<pre><code>
+  CREATE ROLE Role_Manager;
+CREATE ROLE Role_Employee;
+GO
+GRANT SELECT, INSERT, UPDATE, DELETE ON Клиент TO Role_Manager WITH GRANT OPTION;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Бронирование TO Role_Manager WITH GRANT OPTION;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Номер TO Role_Manager WITH GRANT OPTION;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Номер_Бронирование TO Role_Manager WITH GRANT OPTION;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Заселение TO Role_Manager WITH GRANT OPTION;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Заселение_Номер TO Role_Manager WITH GRANT OPTION;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Услуга TO Role_Manager WITH GRANT OPTION;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Заселение_Услуга TO Role_Manager WITH GRANT OPTION;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Оплата TO Role_Manager WITH GRANT OPTION;
+
+GRANT UNMASK TO Role_Manager;
+
+GRANT SELECT (ФИО, Пол, ID) ON Клиент TO Role_Employee;
+DENY SELECT (Паспортные_данные) ON Клиент TO Role_Employee;
+DENY INSERT, UPDATE, DELETE ON Клиент TO Role_Employee;
+
+GRANT SELECT ON Номер TO Role_Employee;
+DENY INSERT, UPDATE, DELETE ON Номер TO Role_Employee;
+
+GRANT SELECT, INSERT, UPDATE ON Бронирование TO Role_Employee;
+DENY DELETE ON Бронирование TO Role_Employee;
+
+GRANT SELECT, INSERT, DELETE ON Номер_Бронирование TO Role_Employee;
+
+GRANT SELECT, INSERT, UPDATE ON Заселение TO Role_Employee;
+DENY DELETE ON Заселение TO Role_Employee;
+
+GRANT SELECT, INSERT, DELETE ON Заселение_Номер TO Role_Employee;
+
+GRANT SELECT ON Услуга TO Role_Employee;
+DENY INSERT, UPDATE, DELETE ON Услуга TO Role_Employee;
+
+GRANT SELECT, INSERT, DELETE ON Заселение_Услуга TO Role_Employee;
+
+GRANT SELECT, INSERT ON Оплата TO Role_Employee;
+DENY UPDATE, DELETE ON Оплата TO Role_Employee;
+
+CREATE USER User_Shipi FOR LOGIN User_Shipi;
+CREATE USER User1_Shipi FOR LOGIN User1_Shipi;
+GO
+
+ALTER ROLE Role_Manager ADD MEMBER User_Shipi;
+ALTER ROLE Role_Employee ADD MEMBER User1_Shipi;
+GO
+
+ALTER TABLE Клиент
+ALTER COLUMN ФИО ADD MASKED WITH (FUNCTION = 'partial(2, "xxxx", 0)');
+GO
+
+CREATE VIEW vw_Клиент_Masked AS
+SELECT
+    ID,
+    LEFT(ФИО, CHARINDEX(' ', ФИО + ' ') - 1) AS ФИО,
+    CONCAT('******', RIGHT(Паспортные_данные, 4)) AS Паспортные_данные,
+    Пол
+FROM Клиент;
+GO
+
+DENY SELECT ON Клиент TO Role_Employee;
+
+GRANT SELECT ON vw_Клиент_Masked TO Role_Employee;
+GO
+</code></pre>
 
 
 
