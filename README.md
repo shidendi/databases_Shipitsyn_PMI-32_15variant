@@ -1630,12 +1630,49 @@ COMMIT;
         <li>неповторяющегося чтения,</li>
         Первое окно:
 <pre><code>
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+GO
 
+BEGIN TRANSACTION;
+
+-- Первое чтение данных
+SELECT 'Окно 1: Первое чтение - ' + ФИО + ', Паспорт: ' + Паспортные_данные
+FROM Клиент 
+WHERE ID = 3;
+
+WAITFOR DELAY '00:00:20';
+
+-- Второе чтение тех же данных
+SELECT 'Окно 1: Второе чтение - ' + ФИО + ', Паспорт: ' + Паспортные_данные
+FROM Клиент 
+WHERE ID = 3;
+
+COMMIT;
 </code></pre>
 <img src="pictures/7.2.51.png" alt="Схема 7.2.51" width="600"> <br>
 Второе окно:
 <pre><code>
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+GO
 
+-- Пауза для начала выполнения окна 1
+WAITFOR DELAY '00:00:10';
+
+BEGIN TRANSACTION;
+
+-- Попытка изменения данных, которые читает окно 1
+UPDATE Клиент 
+SET ФИО = 'Сидорова Анна Павловна (изменено сессией 2)',
+    Паспортные_данные = '9998887777'
+WHERE ID = 3;
+
+
+-- Проверка своих изменений
+SELECT 'Окно 2: После изменения - ' + ФИО + ', Паспорт: ' + Паспортные_данные
+FROM Клиент 
+WHERE ID = 3;
+
+COMMIT;
 </code></pre>
 <img src="pictures/7.2.52.png" alt="Схема 7.2.52" width="600">
         <li>фантома.</li>
