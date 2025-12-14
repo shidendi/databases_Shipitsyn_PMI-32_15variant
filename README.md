@@ -1463,6 +1463,54 @@ SELECT * FROM Клиент WHERE ID = 1;
 </code></pre>
 <img src="pictures/7.2.12.png" alt="Схема 7.2.12" width="600">
         <li>грязного чтения.</li>
+        Первое окно:
+<pre><code>
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
+BEGIN TRANSACTION;
+
+-- Изменение данных без коммита
+UPDATE Клиент 
+SET ФИО = 'Немтинов Никита Сергеевич (грязное чтение)' 
+WHERE ID = 2;
+
+-- Пауза для выполнения сессии 2 (чтения незакоммиченных данных)
+WAITFOR DELAY '00:00:10';
+
+-- Откат изменений
+ROLLBACK;
+
+-- Проверка, что данные вернулись к исходным
+SELECT * FROM Клиент WHERE ID = 2;
+</code></pre>
+<img src="pictures/7.2.21.png" alt="Схема 7.2.21" width="600"> <br>
+Второе окно:
+<pre><code>
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
+-- Пауза для начала выполнения сессии 1
+WAITFOR DELAY '00:00:05';
+
+BEGIN TRANSACTION;
+
+-- Чтение незакоммиченных данных (грязное чтение)
+SELECT * FROM Клиент WHERE ID = 2;
+
+-- Дополнительная проверка
+SELECT 'Прочитано грязное значение: ' + ФИО 
+FROM Клиент 
+WHERE ID = 2;
+
+-- Пауза для отката в сессии 1
+WAITFOR DELAY '00:00:10';
+
+-- Проверка данных после отката
+SELECT * FROM Клиент WHERE ID = 2;
+
+-- Завершение транзакции
+COMMIT;
+</code></pre>
+<img src="pictures/7.2.22.png" alt="Схема 7.2.22" width="600">
       </ul>
     </li>
     <li>Записать протокол выполнения сценариев.</li>
