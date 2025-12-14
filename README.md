@@ -1628,13 +1628,43 @@ COMMIT;
     <li>Установить в обоих сеансах уровень изоляции REPEATABLE READ. Выполнить сценарии проверки:
       <ul>
         <li>неповторяющегося чтения,</li>
+        Первое окно:
+<pre><code>
+
+</code></pre>
+<img src="pictures/7.2.51.png" alt="Схема 7.2.51" width="600"> <br>
+Второе окно:
+<pre><code>
+
+</code></pre>
+<img src="pictures/7.2.52.png" alt="Схема 7.2.52" width="600">
         <li>фантома.</li>
+        Первое окно:
+<pre><code>
+
+</code></pre>
+<img src="pictures/7.2.61.png" alt="Схема 7.2.61" width="600"> <br>
+Второе окно:
+<pre><code>
+
+</code></pre>
+<img src="pictures/7.2.62.png" alt="Схема 7.2.62" width="600">
       </ul>
     </li>
     <li>Записать протокол выполнения сценариев.</li>
     <li>Установить в обоих сеансах уровень изоляции SERIALIZABLE. Выполнить сценарий проверки:
       <ul>
         <li>фантома.</li>
+        Первое окно:
+<pre><code>
+
+</code></pre>
+<img src="pictures/7.2.71.png" alt="Схема 7.2.71" width="600"> <br>
+Второе окно:
+<pre><code>
+
+</code></pre>
+<img src="pictures/7.2.72.png" alt="Схема 7.2.72" width="600">
       </ul>
     </li>
     <li>Записать протокол выполнения сценария.</li>
