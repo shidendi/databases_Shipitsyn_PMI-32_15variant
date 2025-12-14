@@ -1517,6 +1517,61 @@ COMMIT;
     <li>Установить в обоих сеансах уровень изоляции READ COMMITTED. Выполнить сценарии проверки:
       <ul>
         <li>грязного чтения,</li>
+        Первое окно:
+<pre><code>
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+GO
+
+BEGIN TRANSACTION;
+
+-- Изменение данных без коммита
+UPDATE Клиент 
+SET ФИО = 'Немтинов Никита Сергеевич (READ COMMITTED тест)' 
+WHERE ID = 2;
+
+-- Проверка своих изменений
+SELECT 'Сессия 1: Мои изменения (в транзакции) - ' + ФИО
+FROM Клиент 
+WHERE ID = 2;
+
+-- Пауза для выполнения окна 2
+PRINT 'Окно 1: Ожидание 15 секунд...';
+WAITFOR DELAY '00:00:15';
+
+-- Откат изменений
+ROLLBACK;
+
+-- Проверка после отката
+SELECT 'Окно 1: После отката - ' + ФИО
+FROM Клиент 
+WHERE ID = 2;
+</code></pre>
+<img src="pictures/7.2.31.png" alt="Схема 7.2.31" width="600">  <br>
+Второе окно:
+<pre><code>
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+GO
+
+-- Пауза для начала выполнения окна 1
+WAITFOR DELAY '00:00:05';
+
+BEGIN TRANSACTION;
+
+-- Попытка чтения данных
+SELECT 'Сессия 2: Попытка чтения (READ COMMITTED) - ' + ISNULL(ФИО, 'NULL')
+FROM Клиент 
+WHERE ID = 2;
+
+WAITFOR DELAY '00:00:15';
+
+-- Проверка данных после завершения окна 1
+SELECT 'Окно 2: После завершения сессии 1 - ' + ФИО
+FROM Клиент 
+WHERE ID = 2;
+
+COMMIT;
+</code></pre>  
+<img src="pictures/7.2.32.png" alt="Схема 7.2.32" width="600">
         <li>неповторяющегося чтения.</li>
       </ul>
     </li>
