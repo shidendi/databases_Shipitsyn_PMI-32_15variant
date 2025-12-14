@@ -1438,7 +1438,7 @@ COMMIT;
 SELECT * FROM Клиент WHERE ID = 1;
 </code></pre>
 <img src="pictures/7.2.11.png" alt="Схема 7.2.11" width="600">
-        Второе окно:
+Второе окно:
 <pre><code>
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
