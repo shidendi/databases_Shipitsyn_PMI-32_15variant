@@ -1573,6 +1573,55 @@ COMMIT;
 </code></pre>  
 <img src="pictures/7.2.32.png" alt="Схема 7.2.32" width="600">
         <li>неповторяющегося чтения.</li>
+        Первое окно:
+<pre><code>
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+GO
+
+BEGIN TRANSACTION;
+
+-- Первое чтение данных
+SELECT 'Окно 1: Первое чтение - ' + ФИО + ', Паспорт: ' + Паспортные_данные
+FROM Клиент 
+WHERE ID = 3;
+
+-- Пауза между чтениями
+WAITFOR DELAY '00:00:20';
+
+-- Второе чтение тех же данных
+SELECT 'Окно 1: Второе чтение - ' + ФИО + ', Паспорт: ' + Паспортные_данные
+FROM Клиент 
+WHERE ID = 3;
+
+COMMIT;
+</code></pre> 
+<img src="pictures/7.2.41.png" alt="Схема 7.2.41" width="600"> <br>
+Второе окно:
+<pre><code>
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+GO
+
+-- Пауза для начала выполнения окна 1
+WAITFOR DELAY '00:00:10';
+
+BEGIN TRANSACTION;
+
+-- Изменение данных между чтениями окна 1
+UPDATE Клиент 
+SET ФИО = 'Сидорова Анна Павловна (изменено окном 2)',
+    Паспортные_данные = '9998887777'
+WHERE ID = 3;
+
+
+-- Проверка своих изменений
+SELECT 'Окно 2: После изменения - ' + ФИО + ', Паспорт: ' + Паспортные_данные
+FROM Клиент 
+WHERE ID = 3;
+
+COMMIT;
+
+</code></pre> 
+<img src="pictures/7.2.42.png" alt="Схема 7.2.42" width="600">
       </ul>
     </li>
     <li>Записать протокол выполнения сценариев.</li>
