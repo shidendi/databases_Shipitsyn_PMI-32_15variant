@@ -1733,12 +1733,34 @@ COMMIT;
         <li>фантома.</li>
         Первое окно:
 <pre><code>
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+BEGIN TRANSACTION;
 
+-- Чтение диапазона
+SELECT 'Окно 1: Первое чтение'
+SELECT ID, ФИО FROM Клиент WHERE ID BETWEEN 10 AND 15;
+
+WAITFOR DELAY '00:00:10';
+
+-- Повторное чтение
+SELECT 'Окно 1: Второе чтение'  
+SELECT ID, ФИО FROM Клиент WHERE ID BETWEEN 10 AND 15;
+
+COMMIT;
 </code></pre>
 <img src="pictures/7.2.71.png" alt="Схема 7.2.71" width="600"> <br>
 Второе окно:
 <pre><code>
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
+WAITFOR DELAY '00:00:05';
+
+BEGIN TRANSACTION;
+
+INSERT INTO Клиент (ФИО, Паспортные_данные, Пол)
+VALUES ('Тест Фантом', '1234567890', 'М');
+
+COMMIT;
 </code></pre>
 <img src="pictures/7.2.72.png" alt="Схема 7.2.72" width="600">
       </ul>
