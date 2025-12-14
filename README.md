@@ -1546,7 +1546,7 @@ SELECT 'Окно 1: После отката - ' + ФИО
 FROM Клиент 
 WHERE ID = 2;
 </code></pre>
-<img src="pictures/7.2.31.png" alt="Схема 7.2.31" width="600">  <br>
+<img src="pictures/7.2.31.png" alt="Схема 7.2.31" width="600"> <br>
 Второе окно:
 <pre><code>
 SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
