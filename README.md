@@ -1678,11 +1678,50 @@ COMMIT;
         <li>фантома.</li>
         Первое окно:
 <pre><code>
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+GO
 
+BEGIN TRANSACTION;
+
+-- Первое чтение диапазона
+SELECT 'Окно 1: Клиенты с ID от 10 до 20:'
+SELECT ID, ФИО, Пол, Паспортные_данные
+FROM Клиент 
+WHERE ID BETWEEN 10 AND 20
+ORDER BY ID;
+
+WAITFOR DELAY '00:00:15';
+
+-- Второе чтение того же диапазона
+SELECT 'Окно 1: Повторное чтение клиентов с ID от 10 до 20:'
+SELECT ID, ФИО, Пол, Паспортные_данные
+FROM Клиент 
+WHERE ID BETWEEN 10 AND 20
+ORDER BY ID;
+
+COMMIT;
 </code></pre>
 <img src="pictures/7.2.61.png" alt="Схема 7.2.61" width="600"> <br>
 Второе окно:
 <pre><code>
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+GO
+
+WAITFOR DELAY '00:00:08';
+
+BEGIN TRANSACTION;
+
+-- Вставка новой записи в диапазон
+INSERT INTO Клиент (ФИО, Паспортные_данные, Пол)
+VALUES ('Фантомный Клиент', '7776665554', 'Ж');
+
+
+-- Проверка вставки
+SELECT 'Окно 2: Проверка вставки - ID: ' + CAST(ID AS VARCHAR) + ', ФИО: ' + ФИО
+FROM Клиент 
+WHERE Паспортные_данные = '7776665554';
+
+COMMIT;
 
 </code></pre>
 <img src="pictures/7.2.62.png" alt="Схема 7.2.62" width="600">
