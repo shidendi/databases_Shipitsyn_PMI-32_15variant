@@ -1415,13 +1415,36 @@ SELECT * FROM Клиент WHERE Паспортные_данные = '9999999999
         <li>потерянных изменений,</li>
         Первое окно:
 <pre><code>
-  -- Установка уровня изоляции
+-- изоляция
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
+BEGIN TRANSACTION;
+
+-- Чтение данных (для проверки текущего состояния)
+SELECT * FROM Клиент WHERE ID = 1;
+
+-- Изменение данных
+UPDATE Клиент 
+SET ФИО = 'Шипицын Денис Александрович (изменено сессией 1)' 
+WHERE ID = 1;
+
+-- Пауза для выполнения сессии 2
+WAITFOR DELAY '00:00:10';
+
+-- Завершение транзакции
+COMMIT;
+
+-- Проверка результата
+SELECT * FROM Клиент WHERE ID = 1;
+</code></pre>
+<img src="pictures/7.2.11png" alt="Схема 7.2.11" width="600">
+        Второе окно:
+<pre><code>
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 -- Пауза для начала выполнения сессии 1
 WAITFOR DELAY '00:00:05';
 
--- Начало транзакции
 BEGIN TRANSACTION;
 
 -- Чтение данных (должно увидеть изменения сессии 1, даже если они не закоммичены)
@@ -1438,6 +1461,7 @@ COMMIT;
 -- Проверка результата
 SELECT * FROM Клиент WHERE ID = 1;
 </code></pre>
+<img src="pictures/7.2.12png" alt="Схема 7.2.12" width="600">
         <li>грязного чтения.</li>
       </ul>
     </li>
