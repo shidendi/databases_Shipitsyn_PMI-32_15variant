@@ -7,6 +7,7 @@
   <a href="#-lab5"><img alt="la57" src="https://img.shields.io/badge/Lab5-blue"></a>
   <a href="#-lab6"><img alt="lab6" src="https://img.shields.io/badge/Lab6-blue"></a>
   <a href="#-lab7"><img alt="lab7" src="https://img.shields.io/badge/Lab7-blue"></a>
+  <a href="#-la87"><img alt="la87" src="https://img.shields.io/badge/Lab8-blue"></a>
 </p>
 <h3 align="center"> <a href="#client"></a> 
   Вариант 15. Гостиница
@@ -1858,3 +1859,9 @@ SERIALIZABLE обеспечивает максимальную изоляцию 
     <li>Краткие выводы о навыках, приобретенных в ходе выполнения работы.</li>
   </ul>
 </div>
+
+# <img src="https://github.com/user-attachments/assets/e080adec-6af7-4bd2-b232-d43cb37024ac" width="20" height="20"/> Lab8
+[Назад](#content)
+<h3 align="center">
+  <a href="#client"></a>
+</h3>
