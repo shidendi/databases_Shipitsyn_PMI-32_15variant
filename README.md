@@ -1897,10 +1897,7 @@ db.restaurants.find(
 <img src="pictures/8.1.2.png" alt="Схема 8.1.2" width="450"> <br>
     <li>Найдите рестораны, которые набрали более 80, но менее 100 баллов.</li>
 <pre><code>
-db.restaurants.find(
-  { "grades.score": { $gt: 80, $lt: 100 } },
-  { _id: 0, name: 1, borough: 1, cuisine: 1, restaurant_id: 1, grades: 1 }
-)
+
 </code></pre>
 <img src="pictures/8.1.3.png" alt="Схема 8.1.3" width="450"> <br>
     <li>Найдите рестораны, которые не относятся к типу кухни American, получили оценку «А», не расположены в районе Brooklyn. Документ должен отображаться в соответствии с кухней в порядке убывания.</li>
