@@ -2242,6 +2242,28 @@ db.weather.aggregate([
 <img src="pictures/8.2.6.png" alt="Схема 8.2.6" width="450"> <br>
     <li>Увеличьте температуру на один градус при каждом измерении в нечетный день во время зимы. На сколько градусов изменилась средняя температура?</li>
 <pre><code>
+var avg_before = db.weather.aggregate([
+  { $match: { month: { $in: [12, 1, 2] } } }, 
+  { $group: { _id: null, avgTemp: { $avg: "$temperature" } } }
+]).toArray()[0].avgTemp;
+
+print("Средняя температура до обновления:", avg_before);
+
+db.weather.updateMany(
+  {
+    month: { $in: [12, 1, 2] },
+    day: { $mod: [2, 1] } 
+  },
+  { $inc: { temperature: 1 } }
+);
+
+var avg_after = db.weather.aggregate([
+  { $match: { month: { $in: [12, 1, 2] } } },
+  { $group: { _id: null, avgTemp: { $avg: "$temperature" } } }
+]).toArray()[0].avgTemp;
+
+print("Средняя температура после обновления:", avg_after);
+print("Изменение средней температуры:", avg_after - avg_before);
 </code></pre>
 <img src="pictures/8.2.7.png" alt="Схема 8.2.7" width="450"> <br>
   </ol>
