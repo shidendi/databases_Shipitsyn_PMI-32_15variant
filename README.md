@@ -1975,7 +1975,7 @@ db.restaurants.aggregate([
   {
     $group: {
       _id: { borough: "$borough", cuisine: "$cuisine" },
-      count: { $sum: 1 } // считаем количество ресторанов
+      count: { $sum: 1 }
     }
   },
   {
@@ -1987,7 +1987,6 @@ db.restaurants.aggregate([
     }
   }
 ])
-=
 </code></pre>
 <img src="pictures/8.1.8.png" alt="Схема 8.1.8" width="450"> <br>
     <li>В районе Bronx найдите ресторан с минимальной суммой набранных баллов.</li>
