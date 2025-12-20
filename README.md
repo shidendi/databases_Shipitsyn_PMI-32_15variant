@@ -1,4 +1,4 @@
-<h1 name="content" align="center"><a href=""> </a> MSSQL</h1>
+<img width="494" height="30" alt="image" src="https://github.com/user-attachments/assets/a2d46696-438e-4abf-b466-9dfc2761d900" /><h1 name="content" align="center"><a href=""> </a> MSSQL</h1>
 <p align="center"> 
   <a href="#-lab1"><img alt="lab1" src="https://img.shields.io/badge/Lab1-blue"></a>
   <a href="#-lab2"><img alt="lab2" src="https://img.shields.io/badge/Lab2-blue"></a>
@@ -2091,6 +2091,38 @@ db.weather.aggregate([
 <img src="pictures/8.2.1.png" alt="Схема 8.2.1" width="450"> <br>
     <li>Какова средняя температура в году, если исключить 10 дней с самой низкой температурой и 10 дней с самой высокой?</li>
 <pre><code>
+db.weather.aggregate([
+  {
+    $group: {
+      _id: { year: "$year", month: "$month", day: "$day" },
+      avgTemp: { $avg: "$temperature" }
+    }
+  },
+  {
+    $sort: { avgTemp: 1 }
+  },
+  {
+    $skip: 10
+  },
+  {
+    $sort: { avgTemp: -1 }
+  },
+  {
+    $skip: 10
+  },
+  {
+    $group: {
+      _id: null,
+      avgTemperature: { $avg: "$avgTemp" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      avgTemperature: 1
+    }
+  }
+])
 </code></pre>
 <img src="pictures/8.2.2.png" alt="Схема 8.2.2" width="450"> <br>
     <li>Найти первые 10 записей с самой низкой погодой, когда дул ветер с юга и посчитайте среднюю температуры для этих записей</li>
