@@ -1935,9 +1935,19 @@ db.restaurants.find(
 <img src="pictures/8.1.5.png" alt="Схема 8.1.5" width="450"> <br>
     <li>Найдите рестораны, которые относятся к району Bronx и готовят American или Chinese блюда.</li>
 <pre><code>
-
+db.restaurants.find(
+  {
+    borough: "Bronx",
+    $or: [
+      { cuisine: "American" },
+      { cuisine: "Chinese" }
+    ]
+  },
+  { _id: 0, name: 1, borough: 1, cuisine: 1, restaurant_id: 1 }
+)
 </code></pre>
-<img src="pictures/8.1.6.png" alt="Схема 8.1.6" width="450"> <br>
+<img src="pictures/8.1.6.1.png" alt="Схема 8.1.6.1" width="375">
+<img src="pictures/8.1.6.2.png" alt="Схема 8.1.6.2" width="375">
     <li>Найдите идентификатор ресторана, название и оценки для тех ресторанов, которые «2014-08-11T00: 00: 00Z» набрали 9 баллов за оценку А</li>
 <pre><code>
 
