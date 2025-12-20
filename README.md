@@ -2247,8 +2247,6 @@ var avg_before = db.weather.aggregate([
   { $group: { _id: null, avgTemp: { $avg: "$temperature" } } }
 ]).toArray()[0].avgTemp;
 
-print("Средняя температура до обновления:", avg_before);
-
 db.weather.updateMany(
   {
     month: { $in: [12, 1, 2] },
@@ -2262,6 +2260,7 @@ var avg_after = db.weather.aggregate([
   { $group: { _id: null, avgTemp: { $avg: "$temperature" } } }
 ]).toArray()[0].avgTemp;
 
+print("Средняя температура до обновления:", avg_before);
 print("Средняя температура после обновления:", avg_after);
 print("Изменение средней температуры:", avg_after - avg_before);
 </code></pre>
