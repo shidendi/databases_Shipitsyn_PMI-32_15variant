@@ -1981,7 +1981,29 @@ db.restaurants.find(
 <img src="pictures/8.1.8.png" alt="Схема 8.1.8" width="450"> <br>
     <li>В районе Bronx найдите ресторан с минимальной суммой набранных баллов.</li>
 <pre><code>
+db.restaurants.aggregate([
+  { $match: { borough: "Bronx" } },
 
+  { 
+    $addFields: {
+      totalScore: { $sum: "$grades.score" }
+    }
+  },
+
+  { $sort: { totalScore: 1 } },
+
+  { $limit: 1 },
+
+  {
+    $project: {
+      _id: 0,
+      name: 1,
+      borough: 1,
+      totalScore: 1,
+      cuisine: 1
+    }
+  }
+])
 </code></pre>
 <img src="pictures/8.1.9.png" alt="Схема 8.1.9" width="450"> <br>
     <li>Добавьте в коллекцию свой любимый ресторан.</li>
