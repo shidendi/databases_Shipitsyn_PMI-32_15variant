@@ -2177,22 +2177,27 @@ db.weather.aggregate([
 db.weather.aggregate([
   {
     $match: {
-      month: { $in: [12, 1, 2] }
+      month: { $in: [12, 1, 2] },
+      code: { $in: ["SN", "RA"] }
     }
   },
   {
     $group: {
       _id: null,
-      snow: { $sum: { $cond: [ { $lt: ["$temperature", 0] }, 1, 0 ] } },
-      rain: { $sum: { $cond: [ { $gte: ["$temperature", 0] }, 1, 0 ] } }
+      snowDays: {
+        $sum: { $cond: [{ $eq: ["$code", "SN"] }, 1, 0] }
+      },
+      rainDays: {
+        $sum: { $cond: [{ $eq: ["$code", "RA"] }, 1, 0] }
+      }
     }
   },
   {
     $project: {
       _id: 0,
-      snow: 1,
-      rain: 1,
-      difference: { $subtract: ["$snow", "$rain"] }
+      snowDays: 1,
+      rainDays: 1,
+      difference: { $subtract: ["$snowDays", "$rainDays"] }
     }
   }
 ])
