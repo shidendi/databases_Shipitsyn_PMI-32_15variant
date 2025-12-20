@@ -1983,26 +1983,10 @@ db.restaurants.find(
 <pre><code>
 db.restaurants.aggregate([
   { $match: { borough: "Bronx" } },
-
-  { 
-    $addFields: {
-      totalScore: { $sum: "$grades.score" }
-    }
-  },
-
+  { $addFields: { totalScore: { $sum: "$grades.score" } } },
   { $sort: { totalScore: 1 } },
-
   { $limit: 1 },
-
-  {
-    $project: {
-      _id: 0,
-      name: 1,
-      borough: 1,
-      totalScore: 1,
-      cuisine: 1
-    }
-  }
+  { $project: { _id: 0, name: 1, borough: 1, totalScore: 1, cuisine: 1 } }
 ])
 </code></pre>
 <img src="pictures/8.1.9.png" alt="Схема 8.1.9" width="450"> <br>
