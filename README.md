@@ -1950,7 +1950,23 @@ db.restaurants.find(
 <img src="pictures/8.1.6.2.png" alt="Схема 8.1.6.2" width="375">
     <li>Найдите идентификатор ресторана, название и оценки для тех ресторанов, которые «2014-08-11T00: 00: 00Z» набрали 9 баллов за оценку А</li>
 <pre><code>
-
+db.restaurants.find(
+  {
+    grades: {
+      $elemMatch: {
+        "date.$date": 1407715200000,
+        grade: "A",
+        score: 9
+      }
+    }
+  },
+  {
+    _id: 0,
+    restaurant_id: 1,
+    name: 1,
+    grades: 1
+  }
+)
 </code></pre>
 <img src="pictures/8.1.7.png" alt="Схема 8.1.7" width="450"> <br>
     <li>В каждом районе посчитайте количество ресторанов по каждому виду кухни. Документ должен иметь формат borough, cuisine, count</li>
