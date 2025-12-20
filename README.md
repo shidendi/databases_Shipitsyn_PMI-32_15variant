@@ -2202,7 +2202,7 @@ db.weather.aggregate([
   }
 ])
 </code></pre>
-<img src="pictures/8.2.5.png" alt="Схема 8.2.5" width="450"> <br>
+<img src="pictures/8.2.5.png" alt="Схема 8.2.5345" width="450"> <br>
     <li>Какова вероятность того что в ясный день выпадут осадки? (Предположим, что день считается ясным, если ясная погода фиксируется более чем в 75% случаев)</li>
 <pre><code>
 db.weather.aggregate([
