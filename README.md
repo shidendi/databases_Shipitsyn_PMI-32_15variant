@@ -2008,7 +2008,21 @@ db.restaurants.aggregate([
 <img src="pictures/8.1.9.png" alt="Схема 8.1.9" width="450"> <br>
     <li>Добавьте в коллекцию свой любимый ресторан.</li>
 <pre><code>
-
+db.restaurants.insertOne({
+  name: "Любимый дворик",
+  borough: "Онега",
+  cuisine: "Домашняя кухня",
+  address: {
+    building: "1",
+    street: "Центральная улица",
+    zipcode: "164000",
+    coord: [38.084, 62.544]
+  },
+  grades: [
+    { date: new Date(), grade: "A", score: 5 }
+  ],
+  restaurant_id: "99999999"
+})
 </code></pre>
 <img src="pictures/8.1.10.png" alt="Схема 8.1.10" width="450"> <br>
     <li>В добавленном ресторане укажите информацию о времени его работы.</li>
