@@ -1894,57 +1894,57 @@ db.restaurants.find(
   { _id: 0, name: 1, borough: 1, cuisine: 1, restaurant_id: 1 }
 ).sort({ name: 1 }).limit(5)
 </code></pre>
-<img src="pictures/8.1.2.png" alt="Схема 8.1.2" width="600"> <br>
+<img src="pictures/8.1.2.png" alt="Схема 8.1.2" width="450"> <br>
     <li>Найдите рестораны, которые набрали более 80, но менее 100 баллов.</li>
 <pre><code>
 
 </code></pre>
-<img src="pictures/8.1.3.png" alt="Схема 8.1.3" width="600"> <br>
+<img src="pictures/8.1.3.png" alt="Схема 8.1.3" width="450"> <br>
     <li>Найдите рестораны, которые не относятся к типу кухни American, получили оценку «А», не расположены в районе Brooklyn. Документ должен отображаться в соответствии с кухней в порядке убывания.</li>
 <pre><code>
 
 </code></pre>
-<img src="pictures/8.1.4.png" alt="Схема 8.1.4" width="600"> <br>
+<img src="pictures/8.1.4.png" alt="Схема 8.1.4" width="450"> <br>
     <li>Найдите идентификатор ресторана, название, район и кухню для тех ресторанов, чье название начинается с первых трех букв назвали «Wil»</li>
 <pre><code>
 
 </code></pre>
-<img src="pictures/8.1.5.png" alt="Схема 8.1.5" width="600"> <br>
+<img src="pictures/8.1.5.png" alt="Схема 8.1.5" width="450"> <br>
     <li>Найдите рестораны, которые относятся к району Bronx и готовят American или Chinese блюда.</li>
 <pre><code>
 
 </code></pre>
-<img src="pictures/8.1.6.png" alt="Схема 8.1.6" width="600"> <br>
+<img src="pictures/8.1.6.png" alt="Схема 8.1.6" width="450"> <br>
     <li>Найдите идентификатор ресторана, название и оценки для тех ресторанов, которые «2014-08-11T00: 00: 00Z» набрали 9 баллов за оценку А</li>
 <pre><code>
 
 </code></pre>
-<img src="pictures/8.1.7.png" alt="Схема 8.1.7" width="600"> <br>
+<img src="pictures/8.1.7.png" alt="Схема 8.1.7" width="450"> <br>
     <li>В каждом районе посчитайте количество ресторанов по каждому виду кухни. Документ должен иметь формат borough, cuisine, count</li>
 <pre><code>
 
 </code></pre>
-<img src="pictures/8.1.8.png" alt="Схема 8.1.8" width="600"> <br>
+<img src="pictures/8.1.8.png" alt="Схема 8.1.8" width="450"> <br>
     <li>В районе Bronx найдите ресторан с минимальной суммой набранных баллов.</li>
 <pre><code>
 
 </code></pre>
-<img src="pictures/8.1.9.png" alt="Схема 8.1.9" width="600"> <br>
+<img src="pictures/8.1.9.png" alt="Схема 8.1.9" width="450"> <br>
     <li>Добавьте в коллекцию свой любимый ресторан.</li>
 <pre><code>
 
 </code></pre>
-<img src="pictures/8.1.10.png" alt="Схема 8.1.10" width="600"> <br>
+<img src="pictures/8.1.10.png" alt="Схема 8.1.10" width="450"> <br>
     <li>В добавленном ресторане укажите информацию о времени его работы.</li>
 <pre><code>
 
 </code></pre>
-<img src="pictures/8.1.11.png" alt="Схема 8.1.11" width="600"> <br>
+<img src="pictures/8.1.11.png" alt="Схема 8.1.11" width="450"> <br>
     <li>Измените время работы вашего любимого ресторана.</li>
 <pre><code>
 
 </code></pre>
-<img src="pictures/8.1.12.png" alt="Схема 8.1.12" width="600"> <br>
+<img src="pictures/8.1.12.png" alt="Схема 8.1.12" width="450"> <br>
   </ol>
 
   <h4>Задание 2</h4>
