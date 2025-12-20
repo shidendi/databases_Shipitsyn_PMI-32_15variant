@@ -1889,7 +1889,10 @@ db.restaurants.find(
 <img src="pictures/8.1.1.3.png" alt="Схема 8.1.1.3" width="300"> 
     <li>Выведите первые 5 ресторанов в алфавитном порядке, которые находятся в районе Bronx.</li>
 <pre><code>
-
+db.restaurants.find(
+  { borough: "Bronx" },
+  { _id: 0, name: 1, borough: 1, cuisine: 1, restaurant_id: 1 }
+).sort({ name: 1 }).limit(5)
 </code></pre>
 <img src="pictures/8.1.2.png" alt="Схема 8.1.2" width="600"> <br>
     <li>Найдите рестораны, которые набрали более 80, но менее 100 баллов.</li>
