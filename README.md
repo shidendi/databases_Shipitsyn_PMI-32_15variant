@@ -1927,7 +1927,10 @@ db.restaurants.find(
 <img src="pictures/8.1.4.2.png" alt="Схема 8.1.4.2" width="400">
     <li>Найдите идентификатор ресторана, название, район и кухню для тех ресторанов, чье название начинается с первых трех букв назвали «Wil»</li>
 <pre><code>
-
+db.restaurants.find(
+  { name: { $regex: /^Wil/ } },
+  { _id: 0, restaurant_id: 1, name: 1, borough: 1, cuisine: 1 }
+)
 </code></pre>
 <img src="pictures/8.1.5.png" alt="Схема 8.1.5" width="450"> <br>
     <li>Найдите рестораны, которые относятся к району Bronx и готовят American или Chinese блюда.</li>
