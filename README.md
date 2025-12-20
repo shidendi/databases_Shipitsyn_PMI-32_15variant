@@ -2010,12 +2010,48 @@ db.restaurants.insertOne({
 <img src="pictures/8.1.10.png" alt="Схема 8.1.10" width="450"> <br>
     <li>В добавленном ресторане укажите информацию о времени его работы.</li>
 <pre><code>
-
+db.restaurants.insertOne({
+  address: {
+    building: "176",
+    street: "проспект Ленина",
+    zipcode: 164840
+  },
+  borough: "Онега",
+  cuisine: "кафе/домашняя кухня",
+  grades: [
+    { date: { "$date": ISODate("2025-12-21T00:00:00Z") }, grade: "A", score: 5 }
+  ],
+  name: "Любимый дворик",
+  restaurant_id: "666228666",
+  working_hours: {
+    monday:    "09:00–23:00, перерыв 16:00–17:00",
+    tuesday:   "09:00–23:00, перерыв 16:00–17:00",
+    wednesday: "09:00–23:00, перерыв 16:00–17:00",
+    thursday:  "09:00–23:00, перерыв 16:00–17:00",
+    friday:    "09:00–02:00, перерыв 16:00–17:00",
+    saturday:  "09:00–02:00, перерыв 16:00–17:00",
+    sunday:    "12:00–23:00, перерыв 16:00–17:00"
+  }
+});
 </code></pre>
 <img src="pictures/8.1.11.png" alt="Схема 8.1.11" width="450"> <br>
     <li>Измените время работы вашего любимого ресторана.</li>
 <pre><code>
-
+db.restaurants.updateOne(
+  { restaurant_id: "666228666" }, 
+  { $set: {
+      working_hours: {
+        monday:    "08:00–22:00, перерыв 15:00–16:00",
+        tuesday:   "08:00–22:00, перерыв 15:00–16:00",
+        wednesday: "08:00–22:00, перерыв 15:00–16:00",
+        thursday:  "08:00–22:00, перерыв 15:00–16:00",
+        friday:    "08:00–01:00, перерыв 15:00–16:00",
+        saturday:  "08:00–01:00, перерыв 15:00–16:00",
+        sunday:    "10:00–22:00, перерыв 15:00–16:00"
+      }
+    }
+  }
+);
 </code></pre>
 <img src="pictures/8.1.12.png" alt="Схема 8.1.12" width="450"> <br>
   </ol>
