@@ -1923,8 +1923,8 @@ db.restaurants.find(
   { _id: 0, name: 1, borough: 1, cuisine: 1, restaurant_id: 1, grades: 1 }
 ).sort({ cuisine: -1 })
 </code></pre>
-<img src="pictures/8.1.4.1.png" alt="Схема 8.1.4.1" width="400">
-<img src="pictures/8.1.4.2.png" alt="Схема 8.1.4.2" width="400">
+<img src="pictures/8.1.4.1.png" alt="Схема 8.1.4.1" width="375">
+<img src="pictures/8.1.4.2.png" alt="Схема 8.1.4.2" width="375">
     <li>Найдите идентификатор ресторана, название, район и кухню для тех ресторанов, чье название начинается с первых трех букв назвали «Wil»</li>
 <pre><code>
 db.restaurants.find(
