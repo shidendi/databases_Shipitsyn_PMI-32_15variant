@@ -1884,7 +1884,9 @@ db.restaurants.find(
     }
 )
 </code></pre>
-<img src="pictures/8.1.1png" alt="Схема 8.1.1" width="600"> <br>    
+<img src="pictures/8.1.1.1png" alt="Схема 8.1.1" width="450"> 
+<img src="pictures/8.1.1.2png" alt="Схема 8.1.1" width="450"> 
+<img src="pictures/8.1.1.3png" alt="Схема 8.1.1" width="450"> 
     <li>Выведите первые 5 ресторанов в алфавитном порядке, которые находятся в районе Bronx.</li>
 <pre><code>
 
