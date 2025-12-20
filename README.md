@@ -2174,6 +2174,28 @@ db.weather.aggregate([
 <img src="pictures/8.2.4.png" alt="Схема 8.2.4" width="450"> <br>
     <li>В течение зимы иногда шел снег, а иногда дождь. Насколько больше (или меньше) выпало осадков в виде снега.</li>
 <pre><code>
+db.weather.aggregate([
+  {
+    $match: {
+      month: { $in: [12, 1, 2] }
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      snow: { $sum: { $cond: [ { $lt: ["$temperature", 0] }, 1, 0 ] } },
+      rain: { $sum: { $cond: [ { $gte: ["$temperature", 0] }, 1, 0 ] } }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      snow: 1,
+      rain: 1,
+      difference: { $subtract: ["$snow", "$rain"] }
+    }
+  }
+])
 </code></pre>
 <img src="pictures/8.2.5.png" alt="Схема 8.2.5" width="450"> <br>
     <li>Какова вероятность того что в ясный день выпадут осадки? (Предположим, что день считается ясным, если ясная погода фиксируется более чем в 75% случаев)</li>
