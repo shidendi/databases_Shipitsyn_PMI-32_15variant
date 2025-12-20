@@ -1971,7 +1971,12 @@ db.restaurants.find(
 <img src="pictures/8.1.7.png" alt="Схема 8.1.7" width="450"> <br>
     <li>В каждом районе посчитайте количество ресторанов по каждому виду кухни. Документ должен иметь формат borough, cuisine, count</li>
 <pre><code>
-
+{ count: 41, borough: 'Bronx', cuisine: 'Hamburgers' },
+  {
+    count: 4,
+    borough: 'Bronx',
+    cuisine: 'Ice Cream, Gelato, Yogurt, Ices'
+  },
 </code></pre>
 <img src="pictures/8.1.8.png" alt="Схема 8.1.8" width="450"> <br>
     <li>В районе Bronx найдите ресторан с минимальной суммой набранных баллов.</li>
