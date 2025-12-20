@@ -2200,6 +2200,44 @@ db.weather.aggregate([
 <img src="pictures/8.2.5.png" alt="Схема 8.2.5" width="450"> <br>
     <li>Какова вероятность того что в ясный день выпадут осадки? (Предположим, что день считается ясным, если ясная погода фиксируется более чем в 75% случаев)</li>
 <pre><code>
+db.weather.aggregate([
+  {
+    $group: {
+      _id: { year: "$year", month: "$month", day: "$day" },
+      total: { $sum: 1 },
+      clear_count: { $sum: { $cond: [{ $eq: ["$code", "CL"] }, 1, 0] } },
+      precipitation_count: { $sum: { $cond: [{ $ne: ["$code", "CL"] }, 1, 0] } }
+    }
+  },
+  {
+    $project: {
+      _id: 1,
+      total: 1,
+      clear_count: 1,
+      precipitation_count: 1,
+      clear_ratio: { $divide: ["$clear_count", "$total"] },
+      has_precipitation: { $gt: ["$precipitation_count", 0] }
+    }
+  },
+  {
+    $match: {
+      clear_ratio: { $gt: 0.75 }
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      clear_days: { $sum: 1 },
+      clear_days_with_precipitation: { $sum: { $cond: ["$has_precipitation", 1, 0] } }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      probability: { $divide: ["$clear_days_with_precipitation", "$clear_days"] }
+    }
+  }
+])
 </code></pre>
 <img src="pictures/8.2.6.png" alt="Схема 8.2.6" width="450"> <br>
     <li>Увеличьте температуру на один градус при каждом измерении в нечетный день во время зимы. На сколько градусов изменилась средняя температура?</li>
