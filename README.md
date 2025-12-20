@@ -2072,6 +2072,21 @@ db.restaurants.updateOne(
   <ol>
     <li>Какова разница между максимальной и минимальной температурой в течение года?</li>
 <pre><code>
+db.weather.aggregate([
+  {
+    $group: {
+      _id: null,
+      maxTemp: { $max: "$temperature" },
+      minTemp: { $min: "$temperature" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      temperatureDifference: { $subtract: ["$maxTemp", "$minTemp"] }
+    }
+  }
+])
 </code></pre>
 <img src="pictures/8.2.1.png" alt="Схема 8.2.1" width="450"> <br>
     <li>Какова средняя температура в году, если исключить 10 дней с самой низкой температурой и 10 дней с самой высокой?</li>
