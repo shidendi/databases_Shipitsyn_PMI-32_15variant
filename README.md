@@ -1466,7 +1466,7 @@ SELECT * FROM Заселение_Номер WHERE Заселение_ID = @Zasel
 SELECT * FROM Заселение_Услуга WHERE Заселение_ID = @ZaselID2;
 SELECT * FROM Оплата WHERE Заселение_ID = @ZaselID2;
 </code></pre>
-<img src="pictures/7.1.png" alt="Схема 7.1" width="600">
+<img src="pictures/7.1.png" alt="Схема 7.1" width="800">
   <h3>Задание 2</h3>
   <p>Подготовить SQL-скрипты для выполнения проверок изолированности транзакций. Ваши скрипты должны работать с одной из таблиц, созданных в лабораторной работе №2.</p>
 
@@ -1524,7 +1524,7 @@ COMMIT;
 -- Проверка результата
 SELECT * FROM Клиент WHERE ID = 1;
 </code></pre>
-<img src="pictures/7.2.12.png" alt="Схема 7.2.12" width="800">
+<img src="pictures/7.2.12.png" alt="Схема 7.2.12" width="600">
         <li>грязного чтения.</li>
         Первое окно:
 <pre><code>
