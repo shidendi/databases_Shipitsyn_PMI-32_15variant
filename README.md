@@ -2127,6 +2127,31 @@ db.weather.aggregate([
 <img src="pictures/8.2.2.png" alt="Схема 8.2.2" width="450"> <br>
     <li>Найти первые 10 записей с самой низкой погодой, когда дул ветер с юга и посчитайте среднюю температуры для этих записей</li>
 <pre><code>
+db.weather.aggregate([
+  {
+    $match: { wind_direction: "Южный" }
+  },
+  {
+    $sort: { temperature: 1 }
+  },
+  {
+    $limit: 10
+  },
+  {
+    $group: {
+      _id: null,
+      avgTemperature: { $avg: "$temperature" },
+      records: { $push: "$$ROOT" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      avgTemperature: 1,
+      records: 1
+    }
+  }
+])
 </code></pre>
 <img src="pictures/8.2.3.png" alt="Схема 8.2.3" width="450"> <br>
     <li>Подсчитайте количество дней, когда шел снег. (Будем считать снегом осадки, которые выпали, когда температура была ниже нуля)</li>
