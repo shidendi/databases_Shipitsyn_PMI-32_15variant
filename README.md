@@ -2153,7 +2153,8 @@ db.weather.aggregate([
   }
 ])
 </code></pre>
-<img src="pictures/8.2.3.png" alt="Схема 8.2.3" width="450"> <br>
+<img src="pictures/8.2.3.1.png" alt="Схема 8.2.3.1" width="450">
+<img src="pictures/8.2.3.2.png" alt="Схема 8.2.3.2" width="450">
     <li>Подсчитайте количество дней, когда шел снег. (Будем считать снегом осадки, которые выпали, когда температура была ниже нуля)</li>
 <pre><code>
 </code></pre>
