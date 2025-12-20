@@ -1914,9 +1914,17 @@ db.restaurants.find(
 <img src="pictures/8.1.3.png" alt="Схема 8.1.3" width="450"> <br>
     <li>Найдите рестораны, которые не относятся к типу кухни American, получили оценку «А», не расположены в районе Brooklyn. Документ должен отображаться в соответствии с кухней в порядке убывания.</li>
 <pre><code>
-
+db.restaurants.find(
+  {
+    cuisine: { $ne: "American" },
+    borough: { $ne: "Brooklyn" },
+    grades: { $elemMatch: { grade: "A" } }
+  },
+  { _id: 0, name: 1, borough: 1, cuisine: 1, restaurant_id: 1, grades: 1 }
+).sort({ cuisine: -1 })
 </code></pre>
-<img src="pictures/8.1.4.png" alt="Схема 8.1.4" width="450"> <br>
+<img src="pictures/8.1.4.1.png" alt="Схема 8.1.4.1" width="450">
+<img src="pictures/8.1.4.2.png" alt="Схема 8.1.4.2" width="450">
     <li>Найдите идентификатор ресторана, название, район и кухню для тех ресторанов, чье название начинается с первых трех букв назвали «Wil»</li>
 <pre><code>
 
