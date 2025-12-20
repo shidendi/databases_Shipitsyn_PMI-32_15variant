@@ -1993,20 +1993,19 @@ db.restaurants.aggregate([
     <li>Добавьте в коллекцию свой любимый ресторан.</li>
 <pre><code>
 db.restaurants.insertOne({
-  name: "Любимый дворик",
+  address: {
+    building: "176",
+    street: "проспект Ленина",
+    zipcode: 164840
+  },
   borough: "Онега",
   cuisine: "Домашняя кухня",
-  address: {
-    building: "1",
-    street: "Центральная улица",
-    zipcode: "164000",
-    coord: [38.084, 62.544]
-  },
   grades: [
-    { date: new Date(), grade: "A", score: 5 }
+    { date: { "$date": ISODate("2025-12-21T00:00:00Z") }, grade: "A", score: 5 }
   ],
-  restaurant_id: "99999999"
-})
+  name: "Любимый дворик",
+  restaurant_id: "666228666"
+});
 </code></pre>
 <img src="pictures/8.1.10.png" alt="Схема 8.1.10" width="450"> <br>
     <li>В добавленном ресторане укажите информацию о времени его работы.</li>
