@@ -1,4 +1,4 @@
-<img width="494" height="30" alt="image" src="https://github.com/user-attachments/assets/a2d46696-438e-4abf-b466-9dfc2761d900" /><h1 name="content" align="center"><a href=""> </a> MSSQL</h1
+<h1 name="content" align="center"><a href=""> </a> MSSQL</h1>
 <p align="center"> 
   <a href="#-lab1"><img alt="lab1" src="https://img.shields.io/badge/Lab1-blue"></a>
   <a href="#-lab2"><img alt="lab2" src="https://img.shields.io/badge/Lab2-blue"></a>
